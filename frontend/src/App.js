@@ -7,6 +7,7 @@ import {
   SecondaryButton,
 } from "./assets/components/button"
 import { theme } from "./assets/theme"
+import Post from "./assets/components/Post"
 
 const App = () => {
   return (
@@ -20,6 +21,24 @@ const App = () => {
         <Accent1Button>Test</Accent1Button>
         <Accent2Button>Test</Accent2Button>
         <Accent3Button>Test</Accent3Button>
+        <Post
+          image="../logo.jpg"
+          name="WolfPack"
+          handle="@WolfPack"
+          myPost={true}
+          content="HOWWLLLL!!! Welcome to the WolfPack"
+          repost={false}
+          liked={false}
+        />
+        <Post
+          image="../logo.jpg"
+          name="AO"
+          handle="@AO"
+          myPost={false}
+          content="HOWWLLLL!!! We are here!!"
+          repost={true}
+          liked={true}
+        />
       </div>
     </>
   )
