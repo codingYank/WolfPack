@@ -6,14 +6,15 @@ import LoopIcon from '@mui/icons-material/Loop';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { theme } from '../theme';
+import '../styles/post.css'
 
 const Post = ({ image, name, handle, myPost, content, repost, liked }) => {
   return (
-    <Paper variant='outlined' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main}}>
-      <div>
-        <div>
+    <Paper variant='outlined' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', maxWidth: '500px', borderRadius: '10px'}}>
+      <div className='post-heading'>
+        <div className='profile-info-container'>
           <img src={image} alt='profile'></img>
-          <div>
+          <div className='profile-info'>
             <h2>{name}</h2>
             <h3>{handle}</h3>
           </div>
@@ -21,11 +22,11 @@ const Post = ({ image, name, handle, myPost, content, repost, liked }) => {
         {myPost ? (
           <Accent1Button>Edit</Accent1Button>
         ) : (
-          <Accent3Button>Follow</Accent3Button>
+         null
         )}
       </div>
       <p>{content}</p>
-      <div>
+      <div className='post-icons'>
           <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
           {repost ? (
             <LoopIcon sx={{ color: theme.palette.accent1.main}} />

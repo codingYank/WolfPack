@@ -22,7 +22,7 @@ const App = () => {
         <Accent2Button>Test</Accent2Button>
         <Accent3Button>Test</Accent3Button>
         <Post
-          image="../logo.jpg"
+          image="/images/logo.jpg"
           name="WolfPack"
           handle="@WolfPack"
           myPost={true}
@@ -31,7 +31,7 @@ const App = () => {
           liked={false}
         />
         <Post
-          image="../logo.jpg"
+          image="/images/logo.jpg"
           name="AO"
           handle="@AO"
           myPost={false}

@@ -1,0 +1,23 @@
+.post-heading, .profile-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-info-container img {
+  height: 75px;
+  border-radius: 9999px;
+}
+
+.profile-info h2, .profile-info h3 {
+  margin: 5px 10px;
+}
+
+.profile-info h3 {
+  font-size: 14px;
+}
+
+.post-icons {
+  display: flex;
+  justify-content: space-around;
+}
