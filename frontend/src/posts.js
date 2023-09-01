@@ -25,12 +25,12 @@ export const posts = [
           comments: [],
         },
       ],
-      likes: [],
-      following: [],
-      folowers: [],
+      likes: [], //array of posts
+      following: [], // array of users
+      folowers: [], // array of users
     },
     content: "First Post",
     image: "",
-    comments: [],
+    comments: [], //array of comments
   },
 ]
