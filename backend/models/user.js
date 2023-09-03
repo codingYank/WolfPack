@@ -26,8 +26,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    following: [userSchema],
-    foloowers: [userSchema],
+    following: [],
+    foloowers: [],
   },
   {
     timestamps: true,
