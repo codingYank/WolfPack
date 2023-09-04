@@ -18,8 +18,8 @@ const LoginScreen = () => {
       component='form'
       onSubmit={handleSubmit}
     >
-      <TextField id='userName' label="Standard" variant="standard" onChange={(e) => setUserName(e.target.value)} />
-      <TextField id="password" label="Standard" variant="standard" onChange={(e) => setPassword(e.target.value)} />
+      <TextField id='userName' label="Email or Handle" variant="standard" onChange={(e) => setUserName(e.target.value)} />
+      <TextField id="password" label="Password" variant="standard" onChange={(e) => setPassword(e.target.value)} />
       <Accent3Button >Sign In</Accent3Button>
     </Box>
   )
