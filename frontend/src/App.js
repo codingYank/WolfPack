@@ -9,6 +9,7 @@ import {
 import { theme } from "./assets/theme"
 import Post from "./assets/components/Post"
 import { posts } from "./posts"
+import LoginScreen from "./screens/LoginScreen"
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           return <Post post={post} />
         })}
       </div>
+      <LoginScreen />
     </>
   )
 }
