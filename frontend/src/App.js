@@ -16,7 +16,11 @@ const App = () => {
   return (
     <>
       <main
-        style={{ backgroundColor: theme.palette.primary.main, height: "100vh" }}
+        style={{
+          backgroundColor: theme.palette.primary.main,
+          height: "100vh",
+          color: theme.palette.secondary.main,
+        }}
       >
         <Outlet />
       </main>
