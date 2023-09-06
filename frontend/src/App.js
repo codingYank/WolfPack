@@ -11,6 +11,7 @@ import Post from "./assets/components/Post"
 import { posts } from "./posts"
 import LoginScreen from "./screens/LoginScreen"
 import { Outlet } from "react-router-dom"
+import Navbar from "./assets/components/Navbar"
 
 const App = () => {
   return (

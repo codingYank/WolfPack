@@ -9,16 +9,14 @@ import {
 import "./assets/styles/index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
-import FeedScreen from "./screens/FeedScreen"
-import LoginScreen from "./screens/LoginScreen"
-import RegisterScreen from "./screens/RegisterScreen"
+import AuthScreen from "./screens/AuthScreen"
+import ContentScreen from "./screens/ContentScreen"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route index={true} path="/" element={<FeedScreen />} />
-      <Route path="/login" element={<LoginScreen />} />
-      <Route path="/register" element={<RegisterScreen />} />
+    <Route path="*" element={<App />}>
+      <Route index={true} path="*" element={<ContentScreen />} />
+      <Route path="*/reg/*" element={<AuthScreen />} />
     </Route>
   )
 )
