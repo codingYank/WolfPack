@@ -6,6 +6,7 @@ const Navbar = () => {
   return (
     <aside>
       <nav>
+        <Link to='/myprofile'>Profile</Link>
         <Link to='/'>Feed</Link>
         <Link to='/search'>Search</Link>
       </nav>

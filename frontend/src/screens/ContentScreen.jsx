@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import FeedScreen from './FeedScreen'
 import Navbar from '../assets/components/Navbar'
 import SearchScreen from './SearchScreen'
+import MyProfileScreen from './MyProfileScreen'
 
 const ContentScreen = () => {
   return (
@@ -11,6 +12,7 @@ const ContentScreen = () => {
       <Routes>
         <Route path='/' element={<FeedScreen />} />
         <Route path='/search' element={<SearchScreen />} />
+        <Route path='/myprofile' element={<MyProfileScreen />} />
       </Routes>
     </div>
   )
