@@ -9,12 +9,11 @@ import { theme } from '../theme';
 import '../styles/post.css'
 
 const Post = ({post}) => {
-  console.log(post)
   return (
     <Paper variant='outlined' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', maxWidth: '500px', borderRadius: '10px'}}>
       <div className='post-heading'>
         <div className='profile-info-container'>
-          <img src={post.user.profilePic} alt='profile'></img>
+          <img src={post.user.profilePicture} alt='profile'></img>
           <div className='profile-info'>
             <h2>{post.user.name}</h2>
             <h3>{post.user.handle}</h3>
