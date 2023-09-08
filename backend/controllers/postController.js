@@ -14,10 +14,26 @@ const getPosts = asyncHandler(async (req, res) => {
 //@route GET /api/posts/:id
 //@access Public
 const getPostById = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id).populate("user")
+  let post = await Post.findById(req.params.id)
+    .populate("user")
+    .populate("comments")
+
+  // let comments = post.comments.map((comment) => {
+  //   console.log(comment.user.valueOf())
+  //   comment.user = comment.user.valueOf()
+  //   return comment.user.populate("user")
+  // const user = await User.findById(comment.user).then((user) => {
+  //   comment.user = user
+  // })
+  // return comment
+
+  // console.log(comments)
+  // post.comments = comments
+
+  // console.log(post)
 
   if (post) {
-    return res.json(post)
+    return res.status(200).json(post)
   } else {
     res.status(404)
     throw new Error("Resource not found")

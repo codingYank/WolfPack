@@ -6,6 +6,7 @@ import posts from "./data/posts.js"
 import User from "./models/user.js"
 import Post from "./models/post.js"
 import connectDB from "./config/db.js"
+import comments from "./data/comments.js"
 
 dotenv.config()
 
@@ -21,11 +22,21 @@ const importData = async () => {
     const admin = createdUsers[0]._id
     const tyler = createdUsers[1]._id
 
+    const sampleComments = comments.map((comment, index) => {
+      if (index === 0) {
+        return { ...comment, user: tyler }
+      }
+    })
+
+    const createdComments = await Post.insertMany(sampleComments)
+
+    const comment = createdComments[0]._id
+
     const samplePosts = posts.map((post, index) => {
       if (index === 0) {
         return { ...post, user: tyler }
-      } else {
-        return { ...post, user: admin }
+      } else if (index === 1) {
+        return { ...post, user: admin, comments: [comment] }
       }
     })
 

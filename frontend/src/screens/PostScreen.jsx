@@ -19,7 +19,12 @@ const PostScreen = () => {
   return (
     <>
     {isLoading ? (<h1>Loading</h1>) : error ? (<div>{error?.data?.message || error.error}</div>) : (
-      <Post post={post} />
+      <>
+        <Post post={post} />
+        {post.comments.map(comment => (
+          <Post post={comment} key={comment._id} />
+        ))}
+      </>
     )}
     </>
   )
