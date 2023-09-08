@@ -1,3 +1,7 @@
+.post {
+  width: 500px;
+}
+
 .post-heading, .profile-info-container {
   display: flex;
   align-items: center;
@@ -20,4 +24,10 @@
 .post-icons {
   display: flex;
   justify-content: space-around;
+}
+
+@media (max-width: 740px) {
+  .post {
+    width: auto;
+  }
 }

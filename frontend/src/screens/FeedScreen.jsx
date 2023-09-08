@@ -15,7 +15,7 @@ const FeedScreen = () => {
         <>
           <div>
             {posts.map((post) => (
-              <Post key={post._id} post={post} />
+              <Post key={post._id} post={post} varient='outlined' />
             ))}
           </div>
         </>
