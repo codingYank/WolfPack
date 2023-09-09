@@ -6,7 +6,7 @@ import User from "../models/user.js"
 //@route GET /api/posts
 //@access Public
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({}).populate("user")
+  const posts = await Post.find({ parent: null }).populate("user")
   res.json(posts)
 })
 
@@ -24,24 +24,6 @@ const getPostById = asyncHandler(async (req, res) => {
         model: "User",
       },
     })
-
-  // const comments = post.comments.map(
-  //   asyncHandler(async (comment) => {
-  //     const user = await User.findById(comment.user).then((user) => {
-  //       return user
-  //       // console.log(user)
-  //     })
-  //     // console.log(user)
-  //     comment.user = user
-  //     return comment
-  //   })
-  // )
-  // return comment
-
-  // console.log(comments)
-  // post.comments = comments
-
-  // console.log(post.comments)
 
   if (post) {
     return res.status(200).json(post)
