@@ -13,6 +13,7 @@ import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import AuthScreen from "./screens/AuthScreen"
 import ContentScreen from "./screens/ContentScreen"
+import "./assets/colors.css"
 
 const router = createBrowserRouter(
   createRoutesFromElements(

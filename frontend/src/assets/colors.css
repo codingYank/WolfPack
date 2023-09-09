@@ -1,0 +1,19 @@
+:root {
+  --primary-main: hsl(184, 100%, 3%);
+  --primary-light: hsl(184, 100%, 8%);
+
+  --secondary-main: hsl(0, 0%, 96%);
+  --secondary-dark: hsl(0, 0%, 86%);
+
+  --accent1-main: hsl(164, 93%, 40%);
+  --accent1-dark : hsl(164, 93%, 30%);
+  --accent1-light: hsl(164, 93%, 50%);
+
+  --accent2-main: hsl(1, 66%, 60%);
+  --accent2-dark: hsl(1, 66%, 50%);
+  --accent2-light: hsl(1, 66%, 70%);
+
+  --accent3-main: hsl(281, 61%, 76%);
+  --accent3-dark: hsl(281, 61%, 66%);
+  --accent3-light: hsl(281, 61%, 86%);
+}
