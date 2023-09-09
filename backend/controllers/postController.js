@@ -16,21 +16,32 @@ const getPosts = asyncHandler(async (req, res) => {
 const getPostById = asyncHandler(async (req, res) => {
   let post = await Post.findById(req.params.id)
     .populate("user")
-    .populate("comments")
+    .populate({
+      path: "comments",
+      model: "Post",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    })
 
-  // let comments = post.comments.map((comment) => {
-  //   console.log(comment.user.valueOf())
-  //   comment.user = comment.user.valueOf()
-  //   return comment.user.populate("user")
-  // const user = await User.findById(comment.user).then((user) => {
-  //   comment.user = user
-  // })
+  // const comments = post.comments.map(
+  //   asyncHandler(async (comment) => {
+  //     const user = await User.findById(comment.user).then((user) => {
+  //       return user
+  //       // console.log(user)
+  //     })
+  //     // console.log(user)
+  //     comment.user = user
+  //     return comment
+  //   })
+  // )
   // return comment
 
   // console.log(comments)
   // post.comments = comments
 
-  // console.log(post)
+  // console.log(post.comments)
 
   if (post) {
     return res.status(200).json(post)
