@@ -23,7 +23,19 @@ const App = () => {
           color: theme.palette.secondary.main,
         }}
       >
-        <Outlet />
+        <div style={{ display: "flex" }}>
+          <Navbar />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Outlet />
+          </div>
+        </div>
       </main>
       {/* <h1>Welcome to the WolfPack</h1>
       <div
