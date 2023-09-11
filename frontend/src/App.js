@@ -12,6 +12,8 @@ import { posts } from "./posts"
 import LoginScreen from "./screens/LoginScreen"
 import { Outlet } from "react-router-dom"
 import Navbar from "./assets/components/Navbar"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const App = () => {
   return (
@@ -37,20 +39,7 @@ const App = () => {
           </div>
         </div>
       </main>
-      {/* <h1>Welcome to the WolfPack</h1>
-      <div
-        style={{ padding: "20px", backgroundColor: theme.palette.primary.main }}
-      >
-        <PrimaryButton>Test</PrimaryButton>
-        <SecondaryButton>Test</SecondaryButton>
-        <Accent1Button>Test</Accent1Button>
-        <Accent2Button>Test</Accent2Button>
-        <Accent3Button>Test</Accent3Button>
-        {posts.map((post) => {
-          return <Post post={post} />
-        })}
-      </div>
-      <LoginScreen /> */}
+      <ToastContainer />
     </>
   )
 }
