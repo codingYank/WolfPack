@@ -17,7 +17,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
     getMyPosts: builder.query({
       query: () => ({
-        url: `${POSTS_URL}/userposts`,
+        url: `${POSTS_URL}/myposts`,
       }),
       keepUnusedDataFor: 5,
     }),

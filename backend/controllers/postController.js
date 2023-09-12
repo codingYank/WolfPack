@@ -14,7 +14,10 @@ const getPosts = asyncHandler(async (req, res) => {
 //@route GET /api/posts
 //@access Public
 const getMyPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ user: req.user._id }).populate("user")
+  console.log(req.user)
+  const posts = await Post.find({ user: req.user._id, parent: null }).populate(
+    "user"
+  )
   res.json(posts)
 })
 

@@ -5,9 +5,10 @@ import {
   getPostById,
   getMyPosts,
 } from "../controllers/postController.js"
+import { protect } from "../middleware/authMiddleware.js"
 
 router.route("/").get(getPosts)
-router.route("/myposts").get(getMyPosts)
+router.route("/myposts").get(protect, getMyPosts)
 router.route("/:id").get(getPostById)
 
 export default router
