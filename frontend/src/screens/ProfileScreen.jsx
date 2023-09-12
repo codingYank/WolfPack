@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useGetSignedInUserQuery } from '../slices/usersApiSlice'
 import { useGetMyPostsQuery } from '../slices/postApiSlice'
+import Post from '../assets/components/Post'
 
 const ProfileScreen = () => {
 
@@ -12,11 +13,11 @@ const ProfileScreen = () => {
 
   return (
     <>
-    {isLoading ? (
+    {isLoading || postsLoading ? (
       <div>Loading</div>
-        ) : error ? (
+        ) : error || postError ? (
         <div>
-          { error?.user?.message || error.error }
+          { error?.user?.message || error.error || postError?.posts?.message || postError.error }
         </div>
       ) : (
         <div>
@@ -42,6 +43,9 @@ const ProfileScreen = () => {
               Followers {user.followers.length}
             </div>
           </div>
+          {posts.map((post) => (
+            <Post post={post} key={post._id} />
+          ))}
         </div>
       )
     }

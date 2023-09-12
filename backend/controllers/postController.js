@@ -10,11 +10,21 @@ const getPosts = asyncHandler(async (req, res) => {
   res.json(posts)
 })
 
-//@desc fetches all posts
-//@route GET /api/posts
+//@desc fetches posts by signed in user's following
+//@route GET /api/posts/feed
+//@access Public
+const getMyFeed = asyncHandler(async (req, res) => {
+  const posts = await Post.find({
+    $or: [{ user: req.user.following }, { user: req.user._id }],
+    parent: null,
+  }).populate("user")
+  res.json(posts)
+})
+
+//@desc fetches signed in user posts
+//@route GET /api/posts/myposts
 //@access Public
 const getMyPosts = asyncHandler(async (req, res) => {
-  console.log(req.user)
   const posts = await Post.find({ user: req.user._id, parent: null }).populate(
     "user"
   )
@@ -44,4 +54,4 @@ const getPostById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getPostById, getPosts, getMyPosts }
+export { getPostById, getPosts, getMyPosts, getMyFeed }

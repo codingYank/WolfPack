@@ -1,9 +1,18 @@
 import React from 'react'
-import { useGetPostsQuery } from '../slices/postApiSlice'
+import { useGetMyFeedQuery, useGetPostsQuery } from '../slices/postApiSlice'
 import Post from '../assets/components/Post'
+import { useSelector } from 'react-redux'
+
 
 const FeedScreen = () => {
-  const { data: posts, isLoading, error } = useGetPostsQuery()
+  const { userInfo } = useSelector((state) => state.auth)
+
+  const { data: posts, isLoading, error } = useGetMyFeedQuery()
+
+  // const { data: posts, isLoading, error } = useGetPostsQuery()
+  // const {data: feed, isLoading: feedLoading, error: feedError} = useGetMyFeedQuery()
+
+  // console.log(feed)
 
   return (
     <>
