@@ -18,6 +18,7 @@ import SearchScreen from "./screens/SearchScreen"
 import UserScreen from "./screens/UserScreen"
 import PostScreen from "./screens/PostScreen"
 import LoginScreen from "./screens/LoginScreen"
+import ProfileScreen from "./screens/ProfileScreen"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<FeedScreen />} />
       <Route path="/search" element={<SearchScreen />} />
       <Route path="/user/:id" element={<UserScreen />} />
+      <Route path="/myprofile" element={<ProfileScreen />} />
       <Route path="/post/:id" element={<PostScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/login" element={<LoginScreen />} />

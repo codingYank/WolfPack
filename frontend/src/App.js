@@ -29,10 +29,13 @@ const App = () => {
           <Navbar />
           <div
             style={{
+              backgroundColor: theme.palette.primary.main,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               width: "100%",
+              height: "100vh",
+              overflow: "auto",
             }}
           >
             <Outlet />

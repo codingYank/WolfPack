@@ -10,6 +10,14 @@ const getPosts = asyncHandler(async (req, res) => {
   res.json(posts)
 })
 
+//@desc fetches all posts
+//@route GET /api/posts
+//@access Public
+const getMyPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ user: req.user._id }).populate("user")
+  res.json(posts)
+})
+
 //@desc fetches a post
 //@route GET /api/posts/:id
 //@access Public
@@ -33,4 +41,4 @@ const getPostById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getPostById, getPosts }
+export { getPostById, getPosts, getMyPosts }

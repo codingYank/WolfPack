@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     following: [],
-    folowers: [],
+    followers: [],
   },
   {
     timestamps: true,
