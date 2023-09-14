@@ -48,9 +48,9 @@ const Navbar = () => {
         <div className='nav-links'>
           <Link to='/'><HomeIcon /> Feed</Link>
           <Link to='/search'><SearchIcon /> Search</Link>
-          <Accent3Button style={{marginTop: '10px'}}>Post</Accent3Button>
+          <Accent3Button>Post</Accent3Button>
         </div>
-        {userInfo ? (<Accent2Button onClick={logoutHandler}>Log Out</Accent2Button>) : null}
+        {userInfo ? (<Accent2Button onClick={logoutHandler} style={{marginBottom: '10px'}}>Log Out</Accent2Button>) : null}
       </nav>
     </aside>
   )
