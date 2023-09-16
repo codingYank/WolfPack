@@ -12,12 +12,14 @@ const getPosts = asyncHandler(async (req, res) => {
 
 //@desc fetches posts by signed in user's following
 //@route GET /api/posts/feed
-//@access Public
+//@access Private
 const getMyFeed = asyncHandler(async (req, res) => {
   const posts = await Post.find({
     $or: [{ user: req.user.following }, { user: req.user._id }],
     parent: null,
-  }).populate("user")
+  })
+    .populate("user")
+    .sort("-createdAt")
   res.json(posts)
 })
 
@@ -54,4 +56,18 @@ const getPostById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getPostById, getPosts, getMyPosts, getMyFeed }
+//@desc Creates new post
+//@route POST /api/posts/
+//@access Private
+const createPost = asyncHandler(async (req, res) => {
+  const post = new Post({
+    user: req.user._id,
+    content: req.body.content,
+    image: req.body.image,
+  })
+
+  const createdPost = await post.save()
+  res.status(201).json(createdPost)
+})
+
+export { getPostById, getPosts, getMyPosts, getMyFeed, createPost }
