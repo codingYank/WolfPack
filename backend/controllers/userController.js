@@ -45,13 +45,16 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Handle not available")
   }
 
+  let profilePic = profilePicture || "/images/logo.jpg"
+  let desc = description || ""
+
   const user = await User.create({
     name,
     email,
     password,
     handle,
-    profilePicture,
-    description,
+    profilePicture: profilePic,
+    description: desc,
   })
 
   if (user) {

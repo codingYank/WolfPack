@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-// import logo from '../../assets/images/logo.jpg'
+import logo from '../../assets/images/logo.jpg'
 import '../styles/navbar.css'
 import { Accent1Button, Accent2Button, Accent3Button } from './button'
 import HomeIcon from '@mui/icons-material/Home';
@@ -50,7 +50,7 @@ const Navbar = () => {
           <Link to='/search'><SearchIcon /> Search</Link>
           <Accent3Button>Post</Accent3Button>
         </div>
-        {userInfo ? (<Accent2Button onClick={logoutHandler} style={{marginBottom: '10px'}}>Log Out</Accent2Button>) : null}
+        {userInfo ? (<Accent2Button onClick={logoutHandler} style={{marginBottom: '10px'}}>Log Out</Accent2Button>) : <div></div>}
       </nav>
     </aside>
   )

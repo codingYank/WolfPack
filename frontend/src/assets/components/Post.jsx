@@ -8,8 +8,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
+import { useSelector } from 'react-redux';
 
 const Post = ({post, varient}) => {
+
+  const { userInfo } = useSelector((state) => state.auth)
+
+
   return (
     <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
       <div className='post-heading'>
@@ -23,7 +28,7 @@ const Post = ({post, varient}) => {
           </div>
         </Link>
         {/* Add condition to check if post is by signed in user */}
-        {post.user._id ? (
+        {post.user._id === userInfo?._id ? (
           <Accent1Button>Edit</Accent1Button>
         ) : (
          null

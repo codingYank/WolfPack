@@ -23,11 +23,10 @@ const userSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     profilePicture: {
       type: String,
-      required: true,
+      // required: true,
     },
     following: [],
     followers: [],

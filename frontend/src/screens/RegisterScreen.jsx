@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import {Accent3Button} from '../assets/components/button'
 import FormContainer from '../assets/components/FormContainer'
 import { PrimaryTextField } from '../assets/components/textField'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { theme } from '../assets/theme'
+import { useRegisterMutation } from '../slices/usersApiSlice'
+import { setCredentials } from '../slices/authSlice'
+import { toast } from 'react-toastify'
 
 
 const RegisterScreen = () => {
@@ -14,9 +18,32 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const [register, { isLoading }] = useRegisterMutation()
+
+  const { userInfo } = useSelector((state) => state.auth)
+
+  const { search } = useLocation()
+  const sp = new URLSearchParams(search)
+  const redirect = sp.get('redirect')  || '/'
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect)
+    }
+  }, [userInfo, redirect, navigate])
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    try {
+      const res = await register({ name, email, handle, password}).unwrap()
+      dispatch(setCredentials({...res}))
+      navigate(redirect)
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
   }
 
   return(
