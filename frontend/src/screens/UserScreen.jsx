@@ -3,15 +3,30 @@ import { useParams } from 'react-router-dom'
 import { useGetUserByIdQuery } from '../slices/usersApiSlice'
 import { useGetPostsByUserIdQuery } from '../slices/postApiSlice'
 import Post from '../assets/components/Post'
+import { useSelector } from 'react-redux'
+import { Accent3Button } from '../assets/components/button'
 
 const UserScreen = () => {
   const { id: userId } = useParams()
+
+  const { userInfo } = useSelector((state) => state.auth)
 
   const {data: user, isLoading: userLoading, error: userError} = useGetUserByIdQuery(userId)
 
   const {data: posts, isLoading: postsLoading, error: postError} = useGetPostsByUserIdQuery(userId)
 
-  console.log(posts)
+  const handleEdit = () => {
+    console.log('Edit profile')
+  }
+
+  const handleUnfollow = () => {
+    console.log('Unfollow')
+  }
+
+  const handleFollow = () => {
+    console.log('Follow')
+  }
+
   return (
     <>
     {userLoading || postsLoading ? (
@@ -35,6 +50,13 @@ const UserScreen = () => {
                 {user.description}
               </p>
             </div>
+            {userId === userInfo._id ? (
+              <Accent3Button type='button' onClick={handleEdit}>Edit Profile</Accent3Button>
+            ) : userInfo.following.includes(userId) ? (
+              <Accent3Button type='button' onClick={handleUnfollow}>Following</Accent3Button>
+            ) : (
+              <Accent3Button type='button' onClick={handleFollow}>Follow</Accent3Button>
+            )}
           </div>
           <div style={{display: 'flex', justifyContent: 'space-around'}}>
             <div>
