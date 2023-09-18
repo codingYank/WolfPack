@@ -6,7 +6,9 @@ import User from "../models/user.js"
 //@route GET /api/posts
 //@access Public
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ parent: null }).populate("user")
+  const posts = await Post.find({ parent: null })
+    .populate("user")
+    .sort("-createdAt")
   res.json(posts)
 })
 
@@ -27,9 +29,19 @@ const getMyFeed = asyncHandler(async (req, res) => {
 //@route GET /api/posts/myposts
 //@access Public
 const getMyPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ user: req.user._id, parent: null }).populate(
-    "user"
-  )
+  const posts = await Post.find({ user: req.user._id, parent: null })
+    .populate("user")
+    .sort("-createdAt")
+  res.json(posts)
+})
+
+//@desc fetches user posts
+//@route GET /api/posts/user
+//@access Public
+const getPostsByUserId = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ user: req.params.id, parent: null })
+    .populate("user")
+    .sort("-createdAt")
   res.json(posts)
 })
 
@@ -70,4 +82,11 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(201).json(createdPost)
 })
 
-export { getPostById, getPosts, getMyPosts, getMyFeed, createPost }
+export {
+  getPostById,
+  getPosts,
+  getMyPosts,
+  getMyFeed,
+  createPost,
+  getPostsByUserId,
+}

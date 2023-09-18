@@ -34,6 +34,12 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getPostsByUserId: builder.query({
+      query: (id) => ({
+        url: `${POSTS_URL}/user/${id}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
   }),
 })
 
@@ -43,4 +49,5 @@ export const {
   useGetMyPostsQuery,
   useGetMyFeedQuery,
   useCreatePostMutation,
+  useGetPostsByUserIdQuery,
 } = postsApiSlice

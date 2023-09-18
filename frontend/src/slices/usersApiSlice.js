@@ -23,6 +23,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    getUserById: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
     logout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -37,4 +43,5 @@ export const {
   useGetSignedInUserQuery,
   useLogoutMutation,
   useRegisterMutation,
+  useGetUserByIdQuery,
 } = usersApiSlice

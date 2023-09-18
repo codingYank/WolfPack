@@ -18,7 +18,7 @@ const Post = ({post, varient}) => {
   return (
     <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
       <div className='post-heading'>
-        <Link to={`user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+        <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
           <div className='profile-info-container'>
             <img src={post.user.profilePicture} alt='profile'></img>
             <div className='profile-info'>
@@ -34,11 +34,11 @@ const Post = ({post, varient}) => {
          null
         )}
       </div>
-      <Link to={`post/${post._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+      <Link to={`/post/${post._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
         <p>{post.content}</p>
       </Link>
       <div className='post-icons'>
-        <Link to={`post/${post._id}`}>
+        <Link to={`/post/${post._id}`}>
           <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
         </Link>
           {post.user._id === 0 ? (

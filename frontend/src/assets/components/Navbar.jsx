@@ -31,9 +31,8 @@ const Navbar = () => {
   return (
     <aside className='nav-sidebar'>
       <nav className='nav'>
-        
             {userInfo ? (
-              <Link to='/myprofile'>
+              <Link to={`/user/${userInfo._id}`}>
                 <div className='nav-profile'>
                   <img src={userInfo.profilePicture} alt='profile' style={{borderRadius: '99999px', width: '100px', height: '100px'}}></img>
                   <h3>{userInfo.name}</h3>
