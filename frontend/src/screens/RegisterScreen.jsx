@@ -38,7 +38,7 @@ const RegisterScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await register({ name, email, handle, password}).unwrap()
+      const res = await register({ name, email, handle, password, confirmPassword}).unwrap()
       dispatch(setCredentials({...res}))
       navigate(redirect)
     } catch (err) {

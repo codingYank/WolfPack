@@ -31,8 +31,19 @@ const authUser = asyncHandler(async (req, res) => {
 //@route POST /api/users/
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, password, handle, name, profilePicture, description } =
-    req.body
+  const {
+    email,
+    password,
+    confirmPassword,
+    handle,
+    name,
+    profilePicture,
+    description,
+  } = req.body
+
+  if (password !== confirmPassword) {
+    throw new Error("Passwords don't match")
+  }
 
   const userExists = await User.findOne({ email })
   const handleTaken = await User.findOne({ handle })
@@ -149,7 +160,13 @@ const deleteUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/:id
 //@access Public
 const getUserByID = asyncHandler(async (req, res) => {
-  res.send("get user by id")
+  const user = await User.findById(req.params.id)
+
+  if (user) {
+    res.status(200).json(user)
+  } else {
+    throw new Error("Resource not found")
+  }
 })
 
 export {
