@@ -1,6 +1,7 @@
 import express from "express"
 import {
   authUser,
+  followUser,
   getUserByID,
   getUserProfile,
   logoutUser,
@@ -18,5 +19,6 @@ router
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile)
 router.route("/:id").get(getUserByID)
+router.route("/follow/:id").post(protect, followUser)
 
 export default router

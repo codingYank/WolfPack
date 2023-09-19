@@ -171,6 +171,38 @@ const getUserByID = asyncHandler(async (req, res) => {
   }
 })
 
+//@desc Follow user
+//@route POST /api/users/follow/:id
+//@access Private
+const followUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+  const otheruser = await User.findById(req.params.id)
+  console.log(user.following)
+
+  if (user) {
+    if (user.following.includes(req.params.id)) {
+      throw new Error("Already following")
+    } else {
+      user.following.push(req.params.id)
+      otheruser.followers.push(req.user._id)
+      await otheruser.save()
+      const updatedUser = await user.save()
+      console.log(updatedUser)
+      res.status(201).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        handle: updatedUser.handle,
+        profilePicture: updatedUser.profilePicture,
+        description: updatedUser.description,
+        followers: updatedUser.followers,
+        following: updatedUser.following,
+      })
+    }
+  } else {
+    throw new Error("Resourse not found")
+  }
+})
+
 export {
   authUser,
   registerUser,
@@ -179,4 +211,5 @@ export {
   updateUserProfile,
   deleteUser,
   getUserByID,
+  followUser,
 }

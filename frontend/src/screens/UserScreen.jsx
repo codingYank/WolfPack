@@ -1,19 +1,25 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useGetUserByIdQuery } from '../slices/usersApiSlice'
+import { useFollowUserMutation, useGetUserByIdQuery } from '../slices/usersApiSlice'
 import { useGetPostsByUserIdQuery } from '../slices/postApiSlice'
 import Post from '../assets/components/Post'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Accent3Button } from '../assets/components/button'
+import { toast } from 'react-toastify'
+import { setCredentials } from '../slices/authSlice'
 
 const UserScreen = () => {
   const { id: userId } = useParams()
 
   const { userInfo } = useSelector((state) => state.auth)
 
-  const {data: user, isLoading: userLoading, error: userError} = useGetUserByIdQuery(userId)
+  const {data: user, isLoading: userLoading, refetch, error: userError} = useGetUserByIdQuery(userId)
 
   const {data: posts, isLoading: postsLoading, error: postError} = useGetPostsByUserIdQuery(userId)
+
+  const [followUser, isLoading] = useFollowUserMutation()
+
+  const dispatch = useDispatch()
 
   const handleEdit = () => {
     console.log('Edit profile')
@@ -23,8 +29,16 @@ const UserScreen = () => {
     console.log('Unfollow')
   }
 
-  const handleFollow = () => {
-    console.log('Follow')
+  const handleFollow = async (id) => {
+    try {
+      const result = await followUser(id).unwrap()
+      console.log(result)
+      dispatch(setCredentials(result))
+      refetch()
+      toast.success('Followed Successfully')
+    } catch (err) {
+      toast.error(err?.data?.massage || err.error)
+    }
   }
 
   return (
@@ -50,13 +64,13 @@ const UserScreen = () => {
                 {user.description}
               </p>
             </div>
-            {userId === userInfo._id ? (
+            {userInfo ? userId === userInfo._id ? (
               <Accent3Button type='button' onClick={handleEdit}>Edit Profile</Accent3Button>
             ) : userInfo.following.includes(userId) ? (
               <Accent3Button type='button' onClick={handleUnfollow}>Following</Accent3Button>
             ) : (
-              <Accent3Button type='button' onClick={handleFollow}>Follow</Accent3Button>
-            )}
+              <Accent3Button type='button' onClick={() => handleFollow(userId)}>Follow</Accent3Button>
+            ) : (null)}
           </div>
           <div style={{display: 'flex', justifyContent: 'space-around'}}>
             <div>
