@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useGetMyFeedQuery, useGetPostsQuery } from '../slices/postApiSlice'
 import Post from '../assets/components/Post'
 import { useSelector } from 'react-redux'
@@ -10,10 +10,9 @@ const FeedScreen = () => {
 
   const { data: posts, isLoading, refetch, error } = useGetMyFeedQuery()
 
-  // const { data: posts, isLoading, error } = useGetPostsQuery()
-  // const {data: feed, isLoading: feedLoading, error: feedError} = useGetMyFeedQuery()
-
-  // console.log(feed)
+  useEffect(() => {
+    refetch()
+  }, [userInfo])
 
   return (
     <>

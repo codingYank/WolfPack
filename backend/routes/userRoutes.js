@@ -6,6 +6,7 @@ import {
   getUserProfile,
   logoutUser,
   registerUser,
+  unfollowUser,
   updateUserProfile,
 } from "../controllers/userController.js"
 import { protect } from "../middleware/authMiddleware.js"
@@ -20,5 +21,6 @@ router
   .put(protect, updateUserProfile)
 router.route("/:id").get(getUserByID)
 router.route("/follow/:id").post(protect, followUser)
+router.route("/unfollow/:id").post(protect, unfollowUser)
 
 export default router

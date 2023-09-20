@@ -41,6 +41,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    unfollowUser: builder.mutation({
+      query: (id) => ({
+        url: `${USERS_URL}/unfollow/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 })
 
@@ -51,4 +57,5 @@ export const {
   useRegisterMutation,
   useGetUserByIdQuery,
   useFollowUserMutation,
+  useUnfollowUserMutation,
 } = usersApiSlice
