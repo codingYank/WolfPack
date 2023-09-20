@@ -183,10 +183,9 @@ const followUser = asyncHandler(async (req, res) => {
       throw new Error("Already following")
     } else {
       user.following.push(req.params.id)
-      otheruser.followers.push(req.user._id)
+      otheruser.followers.push(req.user.id)
       await otheruser.save()
       const updatedUser = await user.save()
-      console.log(updatedUser)
       res.status(201).json({
         _id: updatedUser._id,
         name: updatedUser.name,
@@ -203,30 +202,28 @@ const followUser = asyncHandler(async (req, res) => {
 })
 
 const unfollowUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
-  const otheruser = await User.findById(req.params.id)
-
-  if (user && otheruser) {
-    user.following.indexOf(req.params.id) &&
-      user.following.splice(user.following.indexOf(req.params.id))
-    const updatedUser = await user.save()
-
-    otheruser.followers.indexOf(req.user.id) &&
-      otheruser.followers.splice(otheruser.followers.indexOf(req.user.id))
-    await otheruser.save()
-
-    res.status(201).json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      handle: updatedUser.handle,
-      profilePicture: updatedUser.profilePicture,
-      description: updatedUser.description,
-      followers: updatedUser.followers,
-      following: updatedUser.following,
-    })
-  } else {
-    throw new Error("Resourse not found")
-  }
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    $pull: {
+      following: req.params.id,
+    },
+  })
+  const otheruser = await User.findByIdAndUpdate(req.params.id, {
+    $pull: {
+      followers: req.user.id,
+    },
+  })
+  await otheruser.save()
+  const updatedUser = await User.findById(req.user._id)
+  console.log(updatedUser)
+  res.status(201).json({
+    _id: updatedUser._id,
+    name: updatedUser.name,
+    handle: updatedUser.handle,
+    profilePicture: updatedUser.profilePicture,
+    description: updatedUser.description,
+    followers: updatedUser.followers,
+    following: updatedUser.following,
+  })
 })
 
 export {

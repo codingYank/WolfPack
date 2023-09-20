@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFollowUserMutation, useGetUserByIdQuery, useUnfollowUserMutation } from '../slices/usersApiSlice'
 import { useGetPostsByUserIdQuery } from '../slices/postApiSlice'
@@ -32,6 +32,7 @@ const UserScreen = () => {
   const handleUnfollow = async (id) => {
     try {
       const result = await unfollowUser(id).unwrap()
+      console.log(result)
       dispatch(setCredentials(result))
       refetch()
       // toast.success('Unfollowed Successfully')
@@ -50,6 +51,10 @@ const UserScreen = () => {
       toast.error(err?.data?.massage || err.error)
     }
   }
+
+  useEffect(() => {
+    refetch()
+  }, [userInfo])
 
   return (
     <>
