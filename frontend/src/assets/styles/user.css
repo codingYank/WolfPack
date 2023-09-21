@@ -1,0 +1,9 @@
+.user-card {
+  border: 1px solid var(--secondary-main);
+  padding: 10px; 
+  border-radius: 15px;
+  display: flex; 
+  align-items: center;
+  justify-content: space-around;
+  width: 250px;
+}
