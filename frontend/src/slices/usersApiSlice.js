@@ -47,6 +47,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    getUserFollowingById: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}/following`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+    getUserFollowersById: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}/followers`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
   }),
 })
 
@@ -58,4 +70,6 @@ export const {
   useGetUserByIdQuery,
   useFollowUserMutation,
   useUnfollowUserMutation,
+  useGetUserFollowingByIdQuery,
+  useGetUserFollowersByIdQuery,
 } = usersApiSlice

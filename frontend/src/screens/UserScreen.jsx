@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useFollowUserMutation, useGetUserByIdQuery, useUnfollowUserMutation } from '../slices/usersApiSlice'
 import { useGetPostsByUserIdQuery } from '../slices/postApiSlice'
 import Post from '../assets/components/Post'
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Accent3Button } from '../assets/components/button'
 import { toast } from 'react-toastify'
 import { setCredentials } from '../slices/authSlice'
+import { theme } from '../assets/theme'
 
 
 const UserScreen = () => {
@@ -88,16 +89,16 @@ const UserScreen = () => {
             ) : (null)}
           </div>
           <div style={{display: 'flex', justifyContent: 'space-around'}}>
-            <div>
+            <Link to='following' style={{color: theme.palette.secondary.main, textDecoration: 'none'}}>
               Following {user.following.length}
-            </div>
-            <div>
+            </Link>
+            <Link to='followers' style={{color: theme.palette.secondary.main, textDecoration: 'none'}}>
               Followers {user.followers.length}
-            </div>
+            </Link>
           </div>
-          {posts.map((post) => (
-            <Post post={post} key={post._id} />
-          ))}
+            {posts.map((post) => (
+              <Post post={post} key={post._id} />
+            ))}
         </div>
       )
     }

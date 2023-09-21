@@ -226,6 +226,34 @@ const unfollowUser = asyncHandler(async (req, res) => {
   })
 })
 
+const getUserFollowingById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).populate({
+    path: "following",
+    model: "User",
+  })
+
+  if (user) {
+    return res.status(200).json(user.following)
+  } else {
+    res.status(404)
+    throw new Error("Resource not found")
+  }
+})
+
+const getUserFollowersById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).populate({
+    path: "followers",
+    model: "User",
+  })
+
+  if (user) {
+    return res.status(200).json(user.followers)
+  } else {
+    res.status(404)
+    throw new Error("Resource not found")
+  }
+})
+
 export {
   authUser,
   registerUser,
@@ -236,4 +264,6 @@ export {
   getUserByID,
   followUser,
   unfollowUser,
+  getUserFollowingById,
+  getUserFollowersById,
 }

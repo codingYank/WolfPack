@@ -3,6 +3,8 @@ import {
   authUser,
   followUser,
   getUserByID,
+  getUserFollowersById,
+  getUserFollowingById,
   getUserProfile,
   logoutUser,
   registerUser,
@@ -22,5 +24,7 @@ router
 router.route("/:id").get(getUserByID)
 router.route("/follow/:id").post(protect, followUser)
 router.route("/unfollow/:id").post(protect, unfollowUser)
+router.route("/:id/following").get(getUserFollowingById)
+router.route("/:id/followers").get(getUserFollowersById)
 
 export default router
