@@ -14,7 +14,6 @@ const Post = ({post, varient}) => {
 
   const { userInfo } = useSelector((state) => state.auth)
 
-
   return (
     <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
       <div className='post-heading'>
@@ -38,21 +37,39 @@ const Post = ({post, varient}) => {
         <p>{post.content}</p>
       </Link>
       <div className='post-icons'>
-        <Link to={`/post/${post._id}`}>
+        <Link to={`/post/${post._id}`} style={{textDecoration: 'none'}}>
           <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
+          <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
         </Link>
+        <div>
           {post.user._id === 0 ? (
-            <LoopIcon sx={{ color: theme.palette.accent1.main}} />
+            <>
+              <LoopIcon sx={{ color: theme.palette.accent1.main}} />
+              <span style={{color: theme.palette.accent1.main}}>{post.reposts.length}</span>
+            </>
             ) : (
-              <LoopIcon sx={{ color: theme.palette.secondary.main}} />
+              <>
+                <LoopIcon sx={{ color: theme.palette.secondary.main}} />
+                <span style={{color: theme.palette.secondary.main}}>{post.reposts.length}</span>
+              </>
             ) 
           }
+        </div>
           
+        <div>
           {post.user === 0 ? (
-            <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
+            <>
+              <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
+              <span style={{color: theme.palette.secondary.accent2}}>{post.likes.length}</span>
+            </>
             ) : (
-            <FavoriteBorderIcon sx={{ color: theme.palette.secondary.main}} />) 
+              <>
+              <FavoriteBorderIcon sx={{ color: theme.palette.secondary.main}} />
+              <span style={{color: theme.palette.secondary.main}}>{post.likes.length}</span>
+              </>
+            )
           }
+        </div>
       </div>
     </Paper>
   )
