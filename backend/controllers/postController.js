@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js"
 import Post from "../models/post.js"
+import User from "../models/user.js"
 
 //@desc fetches all posts
 //@route GET /api/posts
@@ -81,6 +82,41 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(201).json(createdPost)
 })
 
+// @desc Like post
+//@route POST /api/posts/like/:id
+//@access Private
+const likePost = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+  const post = await Post.findById(req.params.id)
+
+  console.log(req.params.id)
+
+  if (user && post) {
+    if (user.likes.includes(post._id)) {
+      throw new Error("User already liked post")
+    } else if (post.likes.includes(user._id)) {
+      throw new Error("Post already liked by user")
+    } else {
+      user.likes.push(post._id)
+      post.likes.push(user._id)
+      const updatesUser = await user.save()
+      await post.save()
+      res.json({
+        _id: updatesUser._id,
+        name: updatesUser.name,
+        handle: updatesUser.handle,
+        profilePicture: updatesUser.profilePicture,
+        description: updatesUser.description,
+        followers: updatesUser.followers,
+        following: updatesUser.following,
+        likes: updatesUser.likes,
+      })
+    }
+  } else {
+    throw new Error("Resource not found")
+  }
+})
+
 export {
   getPostById,
   getPosts,
@@ -88,4 +124,5 @@ export {
   getMyFeed,
   createPost,
   getPostsByUserId,
+  likePost,
 }

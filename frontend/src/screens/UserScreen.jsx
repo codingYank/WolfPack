@@ -34,7 +34,7 @@ const UserScreen = () => {
     try {
       const result = await unfollowUser(id).unwrap()
       console.log(result)
-      dispatch(setCredentials(result))
+      dispatch(setCredentials({...result}))
       refetch()
       // toast.success('Unfollowed Successfully')
     } catch (err) {

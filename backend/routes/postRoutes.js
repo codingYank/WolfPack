@@ -7,6 +7,7 @@ import {
   getMyFeed,
   createPost,
   getPostsByUserId,
+  likePost,
 } from "../controllers/postController.js"
 import { protect } from "../middleware/authMiddleware.js"
 
@@ -15,5 +16,6 @@ router.route("/myposts").get(protect, getMyPosts)
 router.route("/feed").get(protect, getMyFeed)
 router.route("/:id").get(getPostById)
 router.route("/user/:id").get(getPostsByUserId)
+router.route("/like/:id").post(protect, likePost)
 
 export default router

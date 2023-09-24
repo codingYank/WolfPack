@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema(
     },
     following: [],
     followers: [],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
   },
   {
     timestamps: true,

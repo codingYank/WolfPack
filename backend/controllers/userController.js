@@ -21,6 +21,7 @@ const authUser = asyncHandler(async (req, res) => {
       description: user.description,
       followers: user.followers,
       following: user.following,
+      likes: user.likes,
     })
   } else {
     res.status(401)

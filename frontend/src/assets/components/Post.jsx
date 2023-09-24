@@ -1,5 +1,5 @@
 import { Paper } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Accent1Button, Accent3Button } from './button'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import LoopIcon from '@mui/icons-material/Loop';
@@ -8,11 +8,39 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLikePostMutation } from '../../slices/postApiSlice';
+import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient}) => {
-
+  
   const { userInfo } = useSelector((state) => state.auth)
+  const [likePost, isLoading] = useLikePostMutation()
+  const [isLiked, setIsLiked] = useState()
+
+  useEffect(() => {
+    setIsLiked(userInfo.likes.includes(post._id))
+  }, [setIsLiked, userInfo])
+
+  console.log(userInfo)
+  const [likes, setLikes] = useState(post.likes.length)
+
+  const dispatch = useDispatch()
+
+  const onLike = async (id) => {
+    if(!isLiked) {
+      setLikes(likes + 1)
+    } else {
+      setLikes(likes - 1)
+    }   
+    setIsLiked(!isLiked)
+    if(!isLiked) {
+      const result = await likePost(id)
+      dispatch(setCredentials(result.data))      
+    } else {
+      
+    }
+  }
 
   return (
     <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
@@ -42,7 +70,7 @@ const Post = ({post, varient}) => {
           <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
         </Link>
         <div>
-          {post.user._id === 0 ? (
+          {post.reposts.includes(userInfo._id) ? (
             <>
               <LoopIcon sx={{ color: theme.palette.accent1.main}} />
               <span style={{color: theme.palette.accent1.main}}>{post.reposts.length}</span>
@@ -56,16 +84,16 @@ const Post = ({post, varient}) => {
           }
         </div>
           
-        <div>
-          {post.user === 0 ? (
+        <div onClick={() => onLike(post._id)}>
+          {(isLiked) ? (
             <>
               <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
-              <span style={{color: theme.palette.secondary.accent2}}>{post.likes.length}</span>
+              <span style={{color: theme.palette.secondary.accent2}}>{likes}</span>
             </>
             ) : (
               <>
               <FavoriteBorderIcon sx={{ color: theme.palette.secondary.main}} />
-              <span style={{color: theme.palette.secondary.main}}>{post.likes.length}</span>
+              <span style={{color: theme.palette.secondary.main}}>{likes}</span>
               </>
             )
           }

@@ -40,6 +40,12 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    likePost: builder.mutation({
+      query: (id) => ({
+        url: `${POSTS_URL}/like/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 })
 
@@ -50,4 +56,5 @@ export const {
   useGetMyFeedQuery,
   useCreatePostMutation,
   useGetPostsByUserIdQuery,
+  useLikePostMutation,
 } = postsApiSlice
