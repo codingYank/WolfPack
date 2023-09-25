@@ -117,6 +117,34 @@ const likePost = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc unlike post
+//@route POST /api/posts/unlike/:id
+//@access Private
+const unLikePost = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    $pull: {
+      likes: req.params.id,
+    },
+  })
+  const post = await Post.findByIdAndUpdate(req.params.id, {
+    $pull: {
+      likes: req.user.id,
+    },
+  })
+  const updatedUser = await User.findById(req.user._id)
+  console.log(updatedUser)
+  res.status(201).json({
+    _id: updatedUser._id,
+    name: updatedUser.name,
+    handle: updatedUser.handle,
+    profilePicture: updatedUser.profilePicture,
+    description: updatedUser.description,
+    followers: updatedUser.followers,
+    following: updatedUser.following,
+    likes: updatedUser.likes,
+  })
+})
+
 export {
   getPostById,
   getPosts,
@@ -125,4 +153,5 @@ export {
   createPost,
   getPostsByUserId,
   likePost,
+  unLikePost,
 }

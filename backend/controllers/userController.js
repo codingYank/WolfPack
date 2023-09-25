@@ -224,6 +224,7 @@ const unfollowUser = asyncHandler(async (req, res) => {
     description: updatedUser.description,
     followers: updatedUser.followers,
     following: updatedUser.following,
+    likes: updatedUser.likes,
   })
 })
 

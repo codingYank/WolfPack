@@ -9,17 +9,18 @@ import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { useLikePostMutation } from '../../slices/postApiSlice';
+import { useLikePostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient}) => {
   
   const { userInfo } = useSelector((state) => state.auth)
   const [likePost, isLoading] = useLikePostMutation()
+  const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
   const [isLiked, setIsLiked] = useState()
 
   useEffect(() => {
-    setIsLiked(userInfo.likes.includes(post._id))
+    setIsLiked(userInfo?.likes.includes(post._id) || false)
   }, [setIsLiked, userInfo])
 
   console.log(userInfo)
@@ -38,7 +39,8 @@ const Post = ({post, varient}) => {
       const result = await likePost(id)
       dispatch(setCredentials(result.data))      
     } else {
-      
+      const result = await unLikePost(id)
+      dispatch(setCredentials(result.data))
     }
   }
 
@@ -65,12 +67,12 @@ const Post = ({post, varient}) => {
         <p>{post.content}</p>
       </Link>
       <div className='post-icons'>
-        <Link to={`/post/${post._id}`} style={{textDecoration: 'none'}}>
+        <Link to={`/post/${post._id}`} className='post-button' style={{textDecoration: 'none'}}>
           <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
           <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
         </Link>
-        <div>
-          {post.reposts.includes(userInfo._id) ? (
+        <button className='post-button'>
+          {post.reposts.includes(userInfo?._id) ? (
             <>
               <LoopIcon sx={{ color: theme.palette.accent1.main}} />
               <span style={{color: theme.palette.accent1.main}}>{post.reposts.length}</span>
@@ -82,9 +84,9 @@ const Post = ({post, varient}) => {
               </>
             ) 
           }
-        </div>
+        </button>
           
-        <div onClick={() => onLike(post._id)}>
+        <button className='post-button' disabled={isLoading && unLikeLoading} onClick={() => onLike(post._id)}>
           {(isLiked) ? (
             <>
               <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
@@ -97,7 +99,7 @@ const Post = ({post, varient}) => {
               </>
             )
           }
-        </div>
+        </button>
       </div>
     </Paper>
   )

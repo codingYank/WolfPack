@@ -26,6 +26,18 @@
   justify-content: space-around;
 }
 
+.post-button {
+  padding: 0;
+  outline: none;
+  border: none;
+  background-color: var(--primary-main);
+  color: var(--secondary-main);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
 @media (max-width: 740px) {
   .post {
     width: auto;
