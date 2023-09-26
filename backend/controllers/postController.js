@@ -17,7 +17,12 @@ const getPosts = asyncHandler(async (req, res) => {
 //@access Private
 const getMyFeed = asyncHandler(async (req, res) => {
   const posts = await Post.find({
-    $or: [{ user: req.user.following }, { user: req.user._id }],
+    $or: [
+      { user: req.user.following },
+      { user: req.user._id },
+      { repostedBy: req.user.following },
+      { repostedBy: req.user._id },
+    ],
     parent: null,
   })
     .populate("user")
@@ -89,8 +94,6 @@ const likePost = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
   const post = await Post.findById(req.params.id)
 
-  console.log(req.params.id)
-
   if (user && post) {
     if (user.likes.includes(post._id)) {
       throw new Error("User already liked post")
@@ -145,6 +148,41 @@ const unLikePost = asyncHandler(async (req, res) => {
   })
 })
 
+// @desc unlike post
+//@route POST /api/posts/repost/:id
+//@access Private
+const repost = asyncHandler(async (req, res) => {
+  // const user = await User.findById(req.user._id)/
+  const post = await Post.findByIdAndUpdate(req.params.id, {
+    $push: {
+      reposts: req.user._id,
+    },
+  })
+
+  if (post) {
+    const repost = new Post({
+      user: post.user,
+      repostedBy: req.user._id,
+      content: post.content,
+      image: post.image,
+    })
+    await repost.save()
+
+    const updatedUser = await User.findById(req.user._id)
+    console.log(updatedUser)
+    res.status(201).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      handle: updatedUser.handle,
+      profilePicture: updatedUser.profilePicture,
+      description: updatedUser.description,
+      followers: updatedUser.followers,
+      following: updatedUser.following,
+      likes: updatedUser.likes,
+    })
+  }
+})
+
 export {
   getPostById,
   getPosts,
@@ -154,4 +192,5 @@ export {
   getPostsByUserId,
   likePost,
   unLikePost,
+  repost,
 }

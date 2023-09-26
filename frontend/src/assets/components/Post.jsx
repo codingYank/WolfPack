@@ -9,22 +9,27 @@ import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { useLikePostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
+import { useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient}) => {
-  
+  console.log(post.reposts.length)
   const { userInfo } = useSelector((state) => state.auth)
   const [likePost, isLoading] = useLikePostMutation()
   const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
+  const [repost, {isLoading: repostLoading}] = useRepostMutation()
+
   const [isLiked, setIsLiked] = useState()
+  const [likes, setLikes] = useState(post.likes.length)
+
+  const [isReposted, setIsReposted] = useState()
+  const [reposts, setReposts] = useState(post.reposts.length)
 
   useEffect(() => {
     setIsLiked(userInfo?.likes.includes(post._id) || false)
+    setIsReposted(post.reposts.includes(userInfo?._id))
   }, [setIsLiked, userInfo])
 
-  console.log(userInfo)
-  const [likes, setLikes] = useState(post.likes.length)
 
   const dispatch = useDispatch()
 
@@ -41,6 +46,18 @@ const Post = ({post, varient}) => {
     } else {
       const result = await unLikePost(id)
       dispatch(setCredentials(result.data))
+    }
+  }
+
+  const onRepost = async (id) => {
+    if(!isReposted) {
+      setReposts(reposts + 1)
+    } else {
+      setReposts(reposts - 1)
+    }
+    setIsReposted(!isReposted)
+    if(!isReposted) {
+      await repost(id)
     }
   }
 
@@ -71,16 +88,16 @@ const Post = ({post, varient}) => {
           <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
           <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
         </Link>
-        <button className='post-button'>
-          {post.reposts.includes(userInfo?._id) ? (
+        <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
+          {isReposted ? (
             <>
               <LoopIcon sx={{ color: theme.palette.accent1.main}} />
-              <span style={{color: theme.palette.accent1.main}}>{post.reposts.length}</span>
+              <span style={{color: theme.palette.accent1.main}}>{reposts}</span>
             </>
             ) : (
               <>
                 <LoopIcon sx={{ color: theme.palette.secondary.main}} />
-                <span style={{color: theme.palette.secondary.main}}>{post.reposts.length}</span>
+                <span style={{color: theme.palette.secondary.main}}>{reposts}</span>
               </>
             ) 
           }

@@ -52,6 +52,12 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    repost: builder.mutation({
+      query: (id) => ({
+        url: `${POSTS_URL}/repost/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 })
 
@@ -64,4 +70,5 @@ export const {
   useGetPostsByUserIdQuery,
   useLikePostMutation,
   useUnLikePostMutation,
+  useRepostMutation,
 } = postsApiSlice
