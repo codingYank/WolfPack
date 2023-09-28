@@ -55,7 +55,7 @@ const UserScreen = () => {
 
   useEffect(() => {
     refetch()
-  }, [userInfo])
+  }, [refetch])
 
   return (
     <>

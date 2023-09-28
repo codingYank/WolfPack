@@ -13,7 +13,7 @@ import { useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '.
 import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient}) => {
-  console.log(post.reposts.length)
+  console.log(post, post.reposts.length)
   const { userInfo } = useSelector((state) => state.auth)
   const [likePost, isLoading] = useLikePostMutation()
   const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
@@ -26,8 +26,8 @@ const Post = ({post, varient}) => {
   const [reposts, setReposts] = useState(post.reposts.length)
 
   useEffect(() => {
-    setIsLiked(userInfo?.likes.includes(post._id) || false)
-    setIsReposted(post.reposts.includes(userInfo?._id))
+    setIsLiked(post.likes.includes(userInfo._id))
+    setIsReposted(post.reposts.includes(userInfo._id))
   }, [setIsLiked, userInfo])
 
 
@@ -42,10 +42,10 @@ const Post = ({post, varient}) => {
     setIsLiked(!isLiked)
     if(!isLiked) {
       const result = await likePost(id)
-      dispatch(setCredentials(result.data))      
+      // dispatch(setCredentials(result.data))      
     } else {
       const result = await unLikePost(id)
-      dispatch(setCredentials(result.data))
+      // dispatch(setCredentials(result.data))
     }
   }
 
