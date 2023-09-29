@@ -96,9 +96,9 @@ const Post = ({post, varient}) => {
           <div className='post-icons'>
             <Link to={`/post/${post._id}`} className='post-button' style={{textDecoration: 'none'}}>
               <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
-              <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
+              <span style={{color: theme.palette.secondary.main}}>{post.quoting.comments.length}</span>
             </Link>
-            <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
+            <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post.quoting._id)}>
               {isReposted ? (
                 <>
                   <LoopIcon sx={{ color: theme.palette.accent1.main}} />
@@ -113,7 +113,7 @@ const Post = ({post, varient}) => {
               }
             </button>
               
-            <button className='post-button' disabled={isLoading && unLikeLoading} onClick={() => onLike(post._id)}>
+            <button className='post-button' disabled={isLoading && unLikeLoading} onClick={() => onLike(post.quoting._id)}>
               {(isLiked) ? (
                 <>
                   <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
