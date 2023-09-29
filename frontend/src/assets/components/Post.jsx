@@ -13,21 +13,29 @@ import { useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '.
 import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient}) => {
-  console.log(post, post.reposts.length)
   const { userInfo } = useSelector((state) => state.auth)
   const [likePost, isLoading] = useLikePostMutation()
   const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
   const [repost, {isLoading: repostLoading}] = useRepostMutation()
 
   const [isLiked, setIsLiked] = useState()
-  const [likes, setLikes] = useState(post.likes.length)
+  const [likes, setLikes] = useState()
 
   const [isReposted, setIsReposted] = useState()
-  const [reposts, setReposts] = useState(post.reposts.length)
+  const [reposts, setReposts] = useState()
 
   useEffect(() => {
-    setIsLiked(post.likes.includes(userInfo._id))
-    setIsReposted(post.reposts.includes(userInfo._id))
+    if (post.quoting) {
+      setIsLiked(post.quoting.likes.includes(userInfo?._id))
+      setLikes(post.quoting.likes.length)
+      setIsReposted(post.quoting.reposts.includes(userInfo?._id))
+      setReposts(post.quoting.reposts.length)
+    } else {
+      setIsLiked(post.likes.includes(userInfo?._id))
+      setLikes(post.likes.length)
+      setIsReposted(post.reposts.includes(userInfo?._id))
+      setReposts(post.reposts.length)
+    }
   }, [setIsLiked, userInfo])
 
 
@@ -61,65 +69,128 @@ const Post = ({post, varient}) => {
     }
   }
 
-  return (
-    <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
-      <div className='post-heading'>
-        <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
-          <div className='profile-info-container'>
-            <img src={post.user.profilePicture} alt='profile'></img>
-            <div className='profile-info'>
-              <h2>{post.user.name}</h2>
-              <h3>{post.user.handle}</h3>
-            </div>
+  if (post.repostedBy) {
+    return (
+      <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
+        <h6 style={{margin: 0, marginBottom: '5px'}}>Reposted by {post.repostedBy.name}</h6>
+          <div className='post-heading'>
+            <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+              <div className='profile-info-container'>
+                <img src={post.user.profilePicture} alt='profile'></img>
+                <div className='profile-info'>
+                  <h2>{post.user.name}</h2>
+                  <h3>{post.user.handle}</h3>
+                </div>
+              </div>
+            </Link>
+            {/* Add condition to check if post is by signed in user */}
+            {post.user._id === userInfo?._id ? (
+              <Accent1Button>Edit</Accent1Button>
+            ) : (
+            null
+            )}
           </div>
+          <Link to={`/post/${post.quoting._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+            <p>{post.quoting.content}</p>
+          </Link>
+          <div className='post-icons'>
+            <Link to={`/post/${post._id}`} className='post-button' style={{textDecoration: 'none'}}>
+              <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
+              <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
+            </Link>
+            <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
+              {isReposted ? (
+                <>
+                  <LoopIcon sx={{ color: theme.palette.accent1.main}} />
+                  <span style={{color: theme.palette.accent1.main}}>{reposts}</span>
+                </>
+                ) : (
+                  <>
+                    <LoopIcon sx={{ color: theme.palette.secondary.main}} />
+                    <span style={{color: theme.palette.secondary.main}}>{reposts}</span>
+                  </>
+                ) 
+              }
+            </button>
+              
+            <button className='post-button' disabled={isLoading && unLikeLoading} onClick={() => onLike(post._id)}>
+              {(isLiked) ? (
+                <>
+                  <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
+                  <span style={{color: theme.palette.secondary.accent2}}>{likes}</span>
+                </>
+                ) : (
+                  <>
+                  <FavoriteBorderIcon sx={{ color: theme.palette.secondary.main}} />
+                  <span style={{color: theme.palette.secondary.main}}>{likes}</span>
+                  </>
+                )
+              }
+            </button>
+          </div>
+        </Paper>
+    )
+  } else {
+    return (
+      <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
+        <div className='post-heading'>
+          <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+            <div className='profile-info-container'>
+              <img src={post.user.profilePicture} alt='profile'></img>
+              <div className='profile-info'>
+                <h2>{post.user.name}</h2>
+                <h3>{post.user.handle}</h3>
+              </div>
+            </div>
+          </Link>
+          {/* Add condition to check if post is by signed in user */}
+          {post.user._id === userInfo?._id ? (
+            <Accent1Button>Edit</Accent1Button>
+          ) : (
+           null
+          )}
+        </div>
+        <Link to={`/post/${post._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+          <p>{post.content}</p>
         </Link>
-        {/* Add condition to check if post is by signed in user */}
-        {post.user._id === userInfo?._id ? (
-          <Accent1Button>Edit</Accent1Button>
-        ) : (
-         null
-        )}
-      </div>
-      <Link to={`/post/${post._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
-        <p>{post.content}</p>
-      </Link>
-      <div className='post-icons'>
-        <Link to={`/post/${post._id}`} className='post-button' style={{textDecoration: 'none'}}>
-          <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
-          <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
-        </Link>
-        <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
-          {isReposted ? (
-            <>
-              <LoopIcon sx={{ color: theme.palette.accent1.main}} />
-              <span style={{color: theme.palette.accent1.main}}>{reposts}</span>
-            </>
-            ) : (
+        <div className='post-icons'>
+          <Link to={`/post/${post._id}`} className='post-button' style={{textDecoration: 'none'}}>
+            <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
+            <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
+          </Link>
+          <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
+            {isReposted ? (
               <>
-                <LoopIcon sx={{ color: theme.palette.secondary.main}} />
-                <span style={{color: theme.palette.secondary.main}}>{reposts}</span>
+                <LoopIcon sx={{ color: theme.palette.accent1.main}} />
+                <span style={{color: theme.palette.accent1.main}}>{reposts}</span>
               </>
-            ) 
-          }
-        </button>
-          
-        <button className='post-button' disabled={isLoading && unLikeLoading} onClick={() => onLike(post._id)}>
-          {(isLiked) ? (
-            <>
-              <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
-              <span style={{color: theme.palette.secondary.accent2}}>{likes}</span>
-            </>
-            ) : (
+              ) : (
+                <>
+                  <LoopIcon sx={{ color: theme.palette.secondary.main}} />
+                  <span style={{color: theme.palette.secondary.main}}>{reposts}</span>
+                </>
+              ) 
+            }
+          </button>
+            
+          <button className='post-button' disabled={isLoading && unLikeLoading} onClick={() => onLike(post._id)}>
+            {(isLiked) ? (
               <>
-              <FavoriteBorderIcon sx={{ color: theme.palette.secondary.main}} />
-              <span style={{color: theme.palette.secondary.main}}>{likes}</span>
+                <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
+                <span style={{color: theme.palette.secondary.accent2}}>{likes}</span>
               </>
-            )
-          }
-        </button>
-      </div>
-    </Paper>
-  )
+              ) : (
+                <>
+                <FavoriteBorderIcon sx={{ color: theme.palette.secondary.main}} />
+                <span style={{color: theme.palette.secondary.main}}>{likes}</span>
+                </>
+              )
+            }
+          </button>
+        </div>
+      </Paper>
+    )
+  }
 }
 
 export default Post

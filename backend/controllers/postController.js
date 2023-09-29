@@ -18,14 +18,16 @@ const getPosts = asyncHandler(async (req, res) => {
 const getMyFeed = asyncHandler(async (req, res) => {
   const posts = await Post.find({
     $or: [
-      { user: req.user.following },
-      { user: req.user._id },
+      { user: req.user.following, repostedBy: null },
+      { user: req.user._id, repostedBy: null },
       { repostedBy: req.user.following },
       { repostedBy: req.user._id },
     ],
     parent: null,
   })
     .populate("user")
+    .populate("quoting")
+    .populate("repostedBy")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -36,6 +38,8 @@ const getMyFeed = asyncHandler(async (req, res) => {
 const getMyPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user: req.user._id, parent: null })
     .populate("user")
+    .populate("quoting")
+    .populate("repostedBy")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -46,6 +50,8 @@ const getMyPosts = asyncHandler(async (req, res) => {
 const getPostsByUserId = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user: req.params.id, parent: null })
     .populate("user")
+    .populate("quoting")
+    .populate("repostedBy")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -56,6 +62,8 @@ const getPostsByUserId = asyncHandler(async (req, res) => {
 const getPostById = asyncHandler(async (req, res) => {
   let post = await Post.findById(req.params.id)
     .populate("user")
+    .populate("quoting")
+    .populate("repostedBy")
     .populate({
       path: "comments",
       model: "Post",
@@ -163,8 +171,9 @@ const repost = asyncHandler(async (req, res) => {
     const repost = new Post({
       user: post.user,
       repostedBy: req.user._id,
-      content: post.content,
-      image: post.image,
+      quoting: post._id,
+      // content: post.content,
+      // image: post.image,
     })
     await repost.save()
 
