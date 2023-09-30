@@ -1,8 +1,15 @@
-.add-post-container {
-  border-bottom: 1px solid var(--secondary-main);
+.add-container {
   width: 100%;
   padding-bottom: 15px;
   padding-top: 15px;
+}
+
+.add-post-container {
+  border-bottom: 1px solid var(--secondary-main);
+}
+
+.add-comment-container {
+  border-top: 1px solid var(--secondary-main);
 }
 
 .add-post-form {

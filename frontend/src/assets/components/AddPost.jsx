@@ -28,7 +28,7 @@ const AddPost = ({ refetch }) => {
   }
 
   return (
-    <div className='add-post-container'>
+    <div className='add-container add-post-container'>
       <form onSubmit={handleSubmit} className='add-post-form'>
         <label htmlFor='post' className='post-label'>Post</label>
         <textarea placeholder='Say Something' id='post' onChange={(e) => setContent(e.target.value)} value={content} className='post-input' ></textarea>

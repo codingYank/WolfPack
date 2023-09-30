@@ -72,7 +72,9 @@ const Post = ({post, varient}) => {
   if (post.repostedBy) {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
-        <h6 style={{margin: 0, marginBottom: '5px'}}>Reposted by {post.repostedBy.name}</h6>
+        <Link to={`/user/${post.repostedBy._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+          <h6 style={{margin: 0, marginBottom: '5px'}}>Reposted by {post.repostedBy.name}</h6>
+        </Link>
           <div className='post-heading'>
             <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
               <div className='profile-info-container'>

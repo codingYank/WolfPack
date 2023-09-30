@@ -20,13 +20,15 @@ const PostScreen = () => {
   return (
     <>
     {isLoading ? (<h1>Loading</h1>) : error ? (<div>{error?.data?.message || error.error}</div>) : (
-      <>
-        <Post post={post} />
-        {post.comments.map(comment => (
-          <Post post={comment} key={comment._id} />
-        ))}
+      <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%'}}>
+        <div style={{overflowY: 'auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <Post post={post} />
+          {post.comments.map(comment => (
+            <Post post={comment} key={comment._id} />
+          ))}
+        </div>
         <AddComment refetch={refetch} />
-      </>
+      </div>
     )}
     </>
   )
