@@ -10,13 +10,14 @@ import {
   likePost,
   unLikePost,
   repost,
+  createComment,
 } from "../controllers/postController.js"
 import { protect } from "../middleware/authMiddleware.js"
 
 router.route("/").get(getPosts).post(protect, createPost)
 router.route("/myposts").get(protect, getMyPosts)
 router.route("/feed").get(protect, getMyFeed)
-router.route("/:id").get(getPostById)
+router.route("/:id").get(getPostById).post(protect, createComment)
 router.route("/user/:id").get(getPostsByUserId)
 router.route("/like/:id").post(protect, likePost)
 router.route("/unlike/:id").post(protect, unLikePost)

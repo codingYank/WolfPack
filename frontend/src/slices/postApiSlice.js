@@ -34,6 +34,13 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createComment: builder.mutation({
+      query: (data) => ({
+        url: `${POSTS_URL}/${data._id}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getPostsByUserId: builder.query({
       query: (id) => ({
         url: `${POSTS_URL}/user/${id}`,
@@ -67,6 +74,7 @@ export const {
   useGetMyPostsQuery,
   useGetMyFeedQuery,
   useCreatePostMutation,
+  useCreateCommentMutation,
   useGetPostsByUserIdQuery,
   useLikePostMutation,
   useUnLikePostMutation,

@@ -95,6 +95,31 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(201).json(createdPost)
 })
 
+//@desc Creates new comment
+//@route POST /api/posts/:id
+//@access Private
+const createComment = asyncHandler(async (req, res) => {
+  const findPost = await Post.findById(req.params.id)
+
+  if (findPost) {
+    const comment = new Post({
+      user: req.user._id,
+      content: req.body.content,
+      image: req.body.image,
+      parent: req.params.id,
+    })
+
+    const createdComment = await comment.save()
+
+    const post = await Post.findByIdAndUpdate(req.params.id, {
+      $push: {
+        comments: createdComment._id,
+      },
+    })
+    res.status(201).json(createdComment)
+  }
+})
+
 // @desc Like post
 //@route POST /api/posts/like/:id
 //@access Private
@@ -198,6 +223,7 @@ export {
   getMyPosts,
   getMyFeed,
   createPost,
+  createComment,
   getPostsByUserId,
   likePost,
   unLikePost,

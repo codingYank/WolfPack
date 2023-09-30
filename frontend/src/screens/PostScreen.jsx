@@ -10,11 +10,12 @@ import { theme } from '../assets/theme';
 import { Link } from 'react-router-dom'
 import '../assets/styles/post.css'
 import Post from '../assets/components/Post';
+import AddComment from '../assets/components/AddComment';
 
 const PostScreen = () => {
   const { id: postId } = useParams()
 
-  const {data: post, isLoading, error} = useGetPostByIdQuery(postId)
+  const {data: post, isLoading, refetch, error} = useGetPostByIdQuery(postId)
 
   return (
     <>
@@ -24,6 +25,7 @@ const PostScreen = () => {
         {post.comments.map(comment => (
           <Post post={comment} key={comment._id} />
         ))}
+        <AddComment refetch={refetch} />
       </>
     )}
     </>
