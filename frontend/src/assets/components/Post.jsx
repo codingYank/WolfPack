@@ -1,6 +1,6 @@
 import { Paper } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Accent1Button, Accent3Button } from './button'
+import { Accent2Button, Accent3Button } from './button'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import LoopIcon from '@mui/icons-material/Loop';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -9,7 +9,7 @@ import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
+import { useDeletePostMutation, useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient}) => {
@@ -17,6 +17,7 @@ const Post = ({post, varient}) => {
   const [likePost, isLoading] = useLikePostMutation()
   const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
   const [repost, {isLoading: repostLoading}] = useRepostMutation()
+  const [deletePost, {isLoading: deleteLoading}] = useDeletePostMutation()
 
   const [isLiked, setIsLiked] = useState()
   const [likes, setLikes] = useState()
@@ -69,6 +70,11 @@ const Post = ({post, varient}) => {
     }
   }
 
+  const onDelete = async (id) => {
+    console.log('delete', id)
+    deletePost(id)
+  }
+
   if (post.repostedBy) {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
@@ -87,7 +93,7 @@ const Post = ({post, varient}) => {
             </Link>
             {/* Add condition to check if post is by signed in user */}
             {post.user._id === userInfo?._id ? (
-              <Accent1Button>Edit</Accent1Button>
+              <Accent2Button onClick={() => onDelete(post._id)}>Delete</Accent2Button>
             ) : (
             null
             )}
@@ -147,7 +153,7 @@ const Post = ({post, varient}) => {
           </Link>
           {/* Add condition to check if post is by signed in user */}
           {post.user._id === userInfo?._id ? (
-            <Accent1Button>Edit</Accent1Button>
+            <Accent2Button onClick={() => onDelete(post._id)}>Delete</Accent2Button>
           ) : (
            null
           )}

@@ -217,6 +217,17 @@ const repost = asyncHandler(async (req, res) => {
   }
 })
 
+const deletePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  // console.log(post.user._id == req.user.id)
+  // console.log(post.user)
+  // console.log(req.user._id)
+
+  await Post.deleteOne({ _id: post._id })
+  res.status(200)
+})
+
 export {
   getPostById,
   getPosts,
@@ -228,4 +239,5 @@ export {
   likePost,
   unLikePost,
   repost,
+  deletePost,
 }
