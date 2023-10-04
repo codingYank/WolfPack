@@ -22,9 +22,9 @@ const PostScreen = () => {
     {isLoading ? (<h1>Loading</h1>) : error ? (<div>{error?.data?.message || error.error}</div>) : (
       <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%'}}>
         <div style={{overflowY: 'auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <Post post={post} />
+          <Post post={post} refetch={refetch} />
           {post.comments.map(comment => (
-            <Post post={comment} key={comment._id} />
+            <Post post={comment} key={comment._id} refetch={refetch} />
           ))}
         </div>
         <AddComment refetch={refetch} />

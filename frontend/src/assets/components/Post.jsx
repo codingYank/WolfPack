@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDeletePostMutation, useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 
-const Post = ({post, varient}) => {
+const Post = ({post, varient, refetch}) => {
   const { userInfo } = useSelector((state) => state.auth)
   const [likePost, isLoading] = useLikePostMutation()
   const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
@@ -73,6 +73,7 @@ const Post = ({post, varient}) => {
   const onDelete = async (id) => {
     console.log('delete', id)
     deletePost(id)
+    refetch()
   }
 
   if (post.repostedBy) {

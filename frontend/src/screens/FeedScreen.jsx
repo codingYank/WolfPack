@@ -25,7 +25,7 @@ const FeedScreen = () => {
         <>
           <div style={{width: '100%', alignItems: 'center', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px 0px'}}>
             {posts.map((post) => (
-              <Post key={post._id} post={post} varient='outlined' />
+              <Post key={post._id} post={post} varient='outlined' refetch={refetch} />
             ))}
           </div>
         </>
