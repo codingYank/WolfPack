@@ -12,6 +12,7 @@ import {
   repost,
   createComment,
   deletePost,
+  unRepost,
 } from "../controllers/postController.js"
 import { protect } from "../middleware/authMiddleware.js"
 
@@ -27,5 +28,6 @@ router.route("/user/:id").get(getPostsByUserId)
 router.route("/like/:id").post(protect, likePost)
 router.route("/unlike/:id").post(protect, unLikePost)
 router.route("/repost/:id").post(protect, repost)
+router.route("/unrepost/:id").post(protect, unRepost)
 
 export default router

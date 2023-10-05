@@ -9,7 +9,7 @@ import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { useDeletePostMutation, useLikePostMutation, useRepostMutation, useUnLikePostMutation } from '../../slices/postApiSlice';
+import { useDeletePostMutation, useLikePostMutation, useRepostMutation, useUnLikePostMutation, useUnRepostMutation } from '../../slices/postApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 
 const Post = ({post, varient, refetch}) => {
@@ -17,6 +17,7 @@ const Post = ({post, varient, refetch}) => {
   const [likePost, isLoading] = useLikePostMutation()
   const [unLikePost, {isLoading: unLikeLoading}] = useUnLikePostMutation()
   const [repost, {isLoading: repostLoading}] = useRepostMutation()
+  const [unRepost, {isLoading: unRepostLoading}] = useUnRepostMutation()
   const [deletePost, {isLoading: deleteLoading}] = useDeletePostMutation()
 
   const [isLiked, setIsLiked] = useState()
@@ -67,6 +68,8 @@ const Post = ({post, varient, refetch}) => {
     setIsReposted(!isReposted)
     if(!isReposted) {
       await repost(id)
+    } else {
+      await unRepost(id)
     }
   }
 

@@ -181,7 +181,7 @@ const unLikePost = asyncHandler(async (req, res) => {
   })
 })
 
-// @desc unlike post
+// @desc repost post
 //@route POST /api/posts/repost/:id
 //@access Private
 const repost = asyncHandler(async (req, res) => {
@@ -217,6 +217,26 @@ const repost = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc unRepost post
+//@route POST /api/posts/unrepost/:id
+//@access Private
+const unRepost = asyncHandler(async (req, res) => {
+  const ogPost = await Post.findByIdAndUpdate(req.params.id, {
+    $pull: {
+      reposts: req.user._id,
+    },
+  })
+
+  if (ogPost) {
+    await Post.deleteMany({
+      quoting: ogPost.id,
+      repostedBy: req.user.id,
+    })
+  } else {
+    throw new Error("Resource not found")
+  }
+})
+
 const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -244,5 +264,6 @@ export {
   likePost,
   unLikePost,
   repost,
+  unRepost,
   deletePost,
 }
