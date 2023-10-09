@@ -1,9 +1,13 @@
-import React from 'react'
+import '../assets/styles/modal.css'
 
 const UpdateUserScreen = ({show}) => {
   if (show) {
     return (
-      <div>UpdateUserScreen</div>
+      <div className='modal-screen'>
+        <div className='modal-content'>
+          UpdateUserScreen
+        </div>
+      </div>
     )
   } else {
     return null
