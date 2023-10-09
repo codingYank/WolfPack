@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useFollowUserMutation, useGetUserByIdQuery, useUnfollowUserMutation } from '../slices/usersApiSlice'
 import { useGetPostsByUserIdQuery } from '../slices/postApiSlice'
@@ -8,9 +8,11 @@ import { Accent3Button } from '../assets/components/button'
 import { toast } from 'react-toastify'
 import { setCredentials } from '../slices/authSlice'
 import { theme } from '../assets/theme'
+import UpdateUserScreen from './UpdateUserScreen'
 
 
 const UserScreen = () => {
+  const [showEdit, setShowEdit] = useState(false)
   const { id: userId } = useParams()
 
   const { userInfo } = useSelector((state) => state.auth)
@@ -28,6 +30,7 @@ const UserScreen = () => {
 
   const handleEdit = () => {
     console.log('Edit profile')
+    setShowEdit(true)
   }
 
   const handleUnfollow = async (id) => {
@@ -59,6 +62,7 @@ const UserScreen = () => {
 
   return (
     <>
+    <UpdateUserScreen show={showEdit} />
     {userLoading || postsLoading ? (
       <div>Loading</div>
         ) : userError || postError ? (
