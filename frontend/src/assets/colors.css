@@ -1,7 +1,7 @@
 :root {
   --primary-main: hsl(184, 100%, 3%);
   --primary-light: hsl(184, 100%, 5%);
-  --primary-screen: hsla(184, 100%, 3%, .1)
+  --primary-screen: hsla(184, 100%, 3%, .5);
 
   --secondary-main: hsl(0, 0%, 96%);
   --secondary-dark: hsl(0, 0%, 86%);
