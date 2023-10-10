@@ -14,4 +14,17 @@
   background-color: var(--primary-main);
   z-index: 100;
   border: 1px solid var(--secondary-main);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.update-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.update-user-btns {
+  display: flex;
+  gap: 10px;
 }

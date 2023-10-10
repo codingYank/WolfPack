@@ -62,7 +62,7 @@ const UserScreen = () => {
 
   return (
     <>
-    <UpdateUserScreen show={showEdit} />
+    <UpdateUserScreen show={showEdit} setShow={setShowEdit} />
     {userLoading || postsLoading ? (
       <div>Loading</div>
         ) : userError || postError ? (
