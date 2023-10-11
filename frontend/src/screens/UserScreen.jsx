@@ -62,7 +62,9 @@ const UserScreen = () => {
 
   return (
     <>
-    <UpdateUserScreen show={showEdit} setShow={setShowEdit} />
+    {showEdit ? (
+      <UpdateUserScreen show={showEdit} setShow={setShowEdit} user={user} refetch={refetch} />
+    ) : null}
     {userLoading || postsLoading ? (
       <div>Loading</div>
         ) : userError || postError ? (

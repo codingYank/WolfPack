@@ -1,22 +1,71 @@
+import { useEffect, useState } from 'react'
 import { Accent3Button } from '../assets/components/button'
 import { PrimaryTextField } from '../assets/components/textField'
+import { useFormik } from 'formik'
 import '../assets/styles/modal.css'
+import { useUpdateUserMutation } from '../slices/usersApiSlice'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../slices/authSlice'
+import { toast } from 'react-toastify'
 
-const UpdateUserScreen = ({show, setShow}) => {
+const UpdateUserScreen = ({show, setShow, user, refetch}) => {
+  const [name, setName] = useState(user.name)
+  const [handle, setHandle] = useState(user.handle)
+  const [description, setDescription] = useState(user.description)
+
+  const [updateUser, isLoading] = useUpdateUserMutation()
+
+  const dispatch = useDispatch()
+
   const onCancel = () => {
     setShow(false)
   }
+
+  const onSubmit = async (data) => {
+    try {
+      const updatedUser = await updateUser(data).unwrap()
+      dispatch(setCredentials({...updatedUser}))
+      refetch()
+      setShow(false)
+    } catch(err) {
+      toast.error(err?.data?.message || err.error)
+    }
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      name,
+      handle,
+      description
+    },
+    onSubmit,
+  })
+
   if (show) {
     return (
       <div className='modal-screen'>
         <div className='modal-content'>
-          <form className='update-user-form'>
-            <PrimaryTextField label='Name'/>
-            <PrimaryTextField label='Handle'/>
-            <PrimaryTextField label='Description'/>
+          <form className='update-user-form' onSubmit={formik.handleSubmit}>
+            <PrimaryTextField 
+              label='Name' 
+              name='name' 
+              value={formik.values.name} 
+              onChange={formik.handleChange}
+            />
+            <PrimaryTextField 
+              label='Handle'
+              name='handle' 
+              value={formik.values.handle} 
+              onChange={formik.handleChange}
+             />
+            <PrimaryTextField 
+              label='Description' 
+              name='description' 
+              value={formik.values.description} 
+              onChange={formik.handleChange}/>
             <div className='update-user-btns'>
               <Accent3Button onClick={onCancel}>Cancel</Accent3Button>
-              <Accent3Button>Save</Accent3Button>
+              <Accent3Button type='submit'>Save</Accent3Button>
             </div>
           </form>
         </div>
