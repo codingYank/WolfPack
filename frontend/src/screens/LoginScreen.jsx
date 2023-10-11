@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLoginMutation } from '../slices/usersApiSlice'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
+import { useFormik } from 'formik'
+import { loginSchema } from '../assets/validation/authUser'
 
 const LoginScreen = () => {
   const [userName, setUserName] = useState('')
@@ -31,7 +33,7 @@ const LoginScreen = () => {
     }
   }, [userInfo, redirect, navigate])
 
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     try {
       let email = userName
@@ -43,17 +45,43 @@ const LoginScreen = () => {
     }
   }
 
+  const formik = useFormik({
+    initialValues: {
+      userName,
+      password
+    },
+    onSubmit,
+    validationSchema: loginSchema
+  })
+
   return (
     <FormContainer>
       <Box
         component='form'
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         sx={{display: 'flex', flexDirection: 'column', gap: '30px'}}
         style={{textAlign: 'center'}}
       >
         <h1 >Log In</h1>
-        <PrimaryTextField id='userName' label="Email or Handle"  onChange={(e) => setUserName(e.target.value)} />
-        <PrimaryTextField id="password" label="Password" type='password' onChange={(e) => setPassword(e.target.value)} />
+        <PrimaryTextField 
+          id='userName'
+          label="Email or Handle"  
+          value={formik.values.password} 
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}  
+        />
+        <PrimaryTextField 
+          id="password" 
+          label="Password" 
+          type='password' 
+          value={formik.values.password} 
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password} 
+        />
         <Accent3Button type='submit' disabled={isLoading}>Sign In</Accent3Button>
         <Link to={ redirect ? `/register?redirect=${redirect}` : '/register'} style={{ color: theme.palette.secondary.main }}>Don't have an account?</Link>
       </Box>
