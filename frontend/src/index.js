@@ -20,11 +20,11 @@ import PostScreen from "./screens/PostScreen"
 import LoginScreen from "./screens/LoginScreen"
 import FollowingScreen from "./screens/FollowingScreen"
 import FollowersScreen from "./screens/FollowersScreen"
+import PrivateRoute from "./assets/components/PrivateRoute"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index={true} path="/" element={<FeedScreen />} />
       <Route path="/search" element={<SearchScreen />} />
       <Route path="/user/:id" element={<UserScreen />} />
       <Route path="/user/:id/following" element={<FollowingScreen />} />
@@ -32,6 +32,9 @@ const router = createBrowserRouter(
       <Route path="/post/:id" element={<PostScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/login" element={<LoginScreen />} />
+      <Route path="" element={<PrivateRoute />}>
+        <Route index={true} path="/" element={<FeedScreen />} />
+      </Route>
     </Route>
   )
 )
