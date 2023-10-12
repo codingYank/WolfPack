@@ -25,6 +25,7 @@ export const PrimaryTextField = styled(TextField)`
   & .MuiOutlinedInput-root {
     & fieldset {
       border-color: ${theme.palette.primary.main};
+      border: none;
     }
     &:hover fieldset {
       border: none;

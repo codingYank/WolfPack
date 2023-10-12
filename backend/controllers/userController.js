@@ -159,6 +159,25 @@ const deleteUser = asyncHandler(async (req, res) => {
 })
 
 //@desc Get user by id
+//@route GET /api/users/search
+//@access Public
+const searchUser = asyncHandler(async (req, res) => {
+  console.log(req.body.query)
+  const users = await User.find({
+    $or: [
+      { name: { $regex: req.body.query, $options: "i" } },
+      { handle: { $regex: req.body.query, $options: "i" } },
+    ],
+  })
+
+  if (users) {
+    res.status(200).json(users)
+  } else {
+    throw new Error("Resource not found")
+  }
+})
+
+//@desc Get user by name
 //@route GET /api/users/:id
 //@access Public
 const getUserByID = asyncHandler(async (req, res) => {
@@ -263,6 +282,7 @@ export {
   updateUserProfile,
   deleteUser,
   getUserByID,
+  searchUser,
   followUser,
   unfollowUser,
   getUserFollowingById,
