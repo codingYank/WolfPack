@@ -34,10 +34,9 @@ const LoginScreen = () => {
   }, [userInfo, redirect, navigate])
 
   const onSubmit = async (e) => {
-    e.preventDefault()
     try {
-      let email = userName
-      const res = await login({ email, password }).unwrap()
+      let email = e.userName
+      const res = await login({ email, password: e.password }).unwrap()
       dispatch(setCredentials({...res}))
       navigate(redirect)
     } catch (err) {
@@ -66,11 +65,11 @@ const LoginScreen = () => {
         <PrimaryTextField 
           id='userName'
           label="Email or Handle"  
-          value={formik.values.password} 
+          value={formik.values.userName} 
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}  
+          error={formik.touched.userName && Boolean(formik.errors.userName)}
+          helperText={formik.touched.userName && formik.errors.userName}  
         />
         <PrimaryTextField 
           id="password" 
