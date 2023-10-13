@@ -42,7 +42,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: query,
         method: "POST",
       }),
-      keepUnusedDataFor: 5,
     }),
     logout: builder.mutation({
       query: () => ({

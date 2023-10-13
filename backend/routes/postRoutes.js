@@ -13,10 +13,12 @@ import {
   createComment,
   deletePost,
   unRepost,
+  searchPosts,
 } from "../controllers/postController.js"
 import { protect } from "../middleware/authMiddleware.js"
 
 router.route("/").get(getPosts).post(protect, createPost)
+router.route("/search").post(searchPosts)
 router.route("/myposts").get(protect, getMyPosts)
 router.route("/feed").get(protect, getMyFeed)
 router

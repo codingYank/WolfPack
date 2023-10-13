@@ -77,6 +77,13 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    searchPosts: builder.mutation({
+      query: (query) => ({
+        url: `${POSTS_URL}/search`,
+        body: query,
+        method: "POST",
+      }),
+    }),
   }),
 })
 
@@ -93,4 +100,5 @@ export const {
   useRepostMutation,
   useUnRepostMutation,
   useDeletePostMutation,
+  useSearchPostsMutation,
 } = postsApiSlice

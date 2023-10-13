@@ -158,11 +158,10 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.send("delete user")
 })
 
-//@desc Get user by id
+//@desc Returns Users that match query
 //@route GET /api/users/search
 //@access Public
 const searchUser = asyncHandler(async (req, res) => {
-  console.log(req.body.query)
   const users = await User.find({
     $or: [
       { name: { $regex: req.body.query, $options: "i" } },

@@ -2,20 +2,53 @@ import React, { useState } from 'react'
 import SearchBox from '../assets/components/SearchBox'
 import { useSearchUserMutation } from '../slices/usersApiSlice'
 import User from '../assets/components/User'
+import Post from '../assets/components/Post'
+import { theme } from '../assets/theme'
+import { useSearchPostsMutation } from '../slices/postApiSlice'
+
 
 const SearchScreen = () => {
    const [users, setUsers] = useState([])
+   const [posts, setPosts] = useState([])
 
-   const [searchUser, {isLoading}] = useSearchUserMutation()
+   const [view, setView] = useState('users')
+
+   const [searchUser, {isLoading: userLoading}] = useSearchUserMutation()
+   const [searchPosts, {isLoading: postLoading}] = useSearchPostsMutation()
 
   console.log(users)
   return (
-    <div>
-      <SearchBox setUsers={setUsers} searchUser={searchUser} isLoading={isLoading}/>
-      {users.map((user) => (
-        <User user={user} key={user._id}/>
-      ))}
-    </div>
+    <>
+      <SearchBox 
+        setUsers={setUsers} 
+        searchUser={searchUser} 
+        userLoading={userLoading}
+        setPosts={setPosts}
+        searchPosts={searchPosts}
+        postLoading={postLoading}
+      />
+      <div>
+        <div style={{borderBottom: `1px solid ${theme.palette.secondary.main}`, marginBottom: '15px'}}>
+          <button className='search-tab' onClick={() => setView('users')}>Users</button>
+          <button className='search-tab' onClick={() => setView('posts')}>Posts</button>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+          {view === 'users' ? (
+            <>
+              {users.map((user) => (
+                <User user={user} key={user._id}/>
+              ))}
+            </>
+          ) : (
+            <>
+              {posts.map((post) => (
+                <Post post={post} key={post._id} />
+              ))}
+            </>
+          )}
+        </div>
+      </div>
+    </>
   )
 }
 

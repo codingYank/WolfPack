@@ -12,6 +12,18 @@ const getPosts = asyncHandler(async (req, res) => {
   res.json(posts)
 })
 
+//@desc Returns Posts that match query
+//@route POST /api/posts/search
+//@access Public
+const searchPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({
+    content: { $regex: req.body.query, $options: "i" },
+  })
+    .populate("user")
+    .sort("likes")
+  res.json(posts)
+})
+
 //@desc fetches posts by signed in user's following
 //@route GET /api/posts/feed
 //@access Private
@@ -99,6 +111,7 @@ const createPost = asyncHandler(async (req, res) => {
 //@route POST /api/posts/:id
 //@access Private
 const createComment = asyncHandler(async (req, res) => {
+  console.log("here")
   const findPost = await Post.findById(req.params.id)
 
   if (findPost) {
@@ -256,6 +269,7 @@ const deletePost = asyncHandler(async (req, res) => {
 export {
   getPostById,
   getPosts,
+  searchPosts,
   getMyPosts,
   getMyFeed,
   createPost,

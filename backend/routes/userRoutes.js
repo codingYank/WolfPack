@@ -23,7 +23,7 @@ router
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile)
 router.route("/:id").get(getUserByID)
-router.route("/search/").post(searchUser)
+router.route("/search").post(searchUser)
 router.route("/follow/:id").post(protect, followUser)
 router.route("/unfollow/:id").post(protect, unfollowUser)
 router.route("/:id/following").get(getUserFollowingById)
