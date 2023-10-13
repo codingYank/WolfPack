@@ -13,11 +13,11 @@ const getPosts = asyncHandler(async (req, res) => {
 })
 
 //@desc Returns Posts that match query
-//@route POST /api/posts/search
+//@route get /api/posts/search
 //@access Public
 const searchPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({
-    content: { $regex: req.body.query, $options: "i" },
+    content: { $regex: req.params.keyword, $options: "i" },
   })
     .populate("user")
     .sort("likes")

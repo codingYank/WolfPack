@@ -1,25 +1,29 @@
 import React, { useState } from 'react'
 import { PrimaryTextField } from './textField'
 import { Accent3Button } from './button'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const SearchBox = ({setUsers, searchUser, userLoading, setPosts, searchPosts, postLoading}) => {
-  const [query, setQuery] = useState('')
+const SearchBox = () => {
+  const navigate = useNavigate()
+  const { keyword: urlKeyword } = useParams()
+  const [ keyword, setKeyword ] = useState(urlKeyword || '')
 
-
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
-    const userRes = await searchUser({query}).unwrap()
-    setUsers(userRes)
-    const postRes = await searchPosts({query}).unwrap()
-    setPosts(postRes)
+    if (keyword.trim()) {
+      setKeyword('')
+      navigate(`/search/${keyword}`)
+    } else {
+      navigate('/')
+    }
   }
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '30px' }}>
       <PrimaryTextField 
         label='Search'
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => setKeyword(e.target.value)}
       />
-      <Accent3Button type='submit' disabled={userLoading || postLoading}>Search</Accent3Button>
+      <Accent3Button type='submit'>Search</Accent3Button>
     </form>
   )
 }

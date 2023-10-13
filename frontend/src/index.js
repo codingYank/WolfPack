@@ -25,7 +25,7 @@ import PrivateRoute from "./assets/components/PrivateRoute"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/search" element={<SearchScreen />} />
+      <Route path="/search/:keyword" element={<SearchScreen />} />
       <Route path="/user/:id" element={<UserScreen />} />
       <Route path="/user/:id/following" element={<FollowingScreen />} />
       <Route path="/user/:id/followers" element={<FollowersScreen />} />
