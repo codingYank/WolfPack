@@ -162,19 +162,21 @@ const deleteUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/search
 //@access Public
 const searchUser = asyncHandler(async (req, res) => {
-  console.log(req.query.keyword)
-  const users = await User.find({
-    $or: [
-      { name: { $regex: req.query.keyword, $options: "i" } },
-      { handle: { $regex: req.query.keyword, $options: "i" } },
-    ],
-  })
+  if (req.query.keyword) {
+    const users = await User.find({
+      $or: [
+        { name: { $regex: req.query.keyword, $options: "i" } },
+        { handle: { $regex: req.query.keyword, $options: "i" } },
+      ],
+    })
 
-  if (users) {
-    res.status(200).json(users)
-  } else {
-    throw new Error("Resource not found")
+    if (users) {
+      res.status(200).json(users)
+    } else {
+      throw new Error("Resource not found")
+    }
   }
+  res.json([])
 })
 
 //@desc Get user by name

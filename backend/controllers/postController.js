@@ -16,12 +16,15 @@ const getPosts = asyncHandler(async (req, res) => {
 //@route get /api/posts/search
 //@access Public
 const searchPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({
-    content: { $regex: req.query.keyword, $options: "i" },
-  })
-    .populate("user")
-    .sort("-likes")
-  res.json(posts)
+  if (req.query.keyword) {
+    const posts = await Post.find({
+      content: { $regex: req.query.keyword, $options: "i" },
+    })
+      .populate("user")
+      .sort("-likes")
+    res.json(posts)
+  }
+  res.json([])
 })
 
 //@desc fetches posts by signed in user's following

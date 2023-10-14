@@ -47,7 +47,7 @@ const Navbar = () => {
         <div className='nav-links'>
           <Link to='/'><HomeIcon /> Feed</Link>
           <Link to='/search'><SearchIcon /> Search</Link>
-          <Accent3Button>Post</Accent3Button>
+          {/* <Accent3Button>Post</Accent3Button> */}
         </div>
         {userInfo ? (<Accent2Button onClick={logoutHandler} style={{marginBottom: '10px'}}>Log Out</Accent2Button>) : <div></div>}
       </nav>

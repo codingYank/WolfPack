@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import SearchBox from '../assets/components/SearchBox'
 import User from '../assets/components/User'
 import Post from '../assets/components/Post'
@@ -10,22 +10,13 @@ import { useSearchUsersQuery } from '../slices/usersApiSlice'
 
 const SearchScreen = () => {
   const {keyword, page} = useParams()
-  console.log(keyword)
+  
   const navigate = useNavigate()
 
-   const [view, setView] = useState('users')
+  const {data: users, isLoading: usersLoading, error: usersError} = useSearchUsersQuery({keyword})
 
-  //  const [searchUser, {isLoading: userLoading}] = useSearchUserMutation()
-  const {data: users, isLoading: usersLoading, refetch: refetchUsers, error: usersError} = useSearchUsersQuery({keyword})
+   const {data: posts, isLoading: postsLoading, error: postError} = useSearchPostsQuery({keyword})
 
-   const {data: posts, isLoading: postsLoading, refetch: refetchPosts, error: postError} = useSearchPostsQuery({keyword})
-
-   useEffect(() => {
-    refetchPosts(keyword)
-    refetchUsers(keyword)
-   }, [refetchPosts, refetchUsers, keyword])
-
-  console.log(users)
 
   const showUsers = () => {
     navigate(`/search/${keyword}/users`)
@@ -38,14 +29,8 @@ const SearchScreen = () => {
   
   return (
     <>
-      <SearchBox 
-        // setUsers={setUsers} 
-        // searchUser={searchUser} 
-        // userLoading={userLoading}
-        // setPosts={setPosts}
-        // searchPosts={searchPosts}
-        // postLoading={postLoading}
-      />
+      <SearchBox />
+      {keyword ? (
       <div>
         <div style={{borderBottom: `1px solid ${theme.palette.secondary.main}`, marginBottom: '15px'}}>
           <button className='search-tab' onClick={showUsers}>Users</button>
@@ -71,6 +56,9 @@ const SearchScreen = () => {
           )}
         </div>
       </div>
+      ) : (
+        null
+      )}
     </>
   )
 }
