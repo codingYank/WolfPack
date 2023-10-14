@@ -36,12 +36,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
-    searchUser: builder.mutation({
-      query: (query) => ({
+    searchUsers: builder.query({
+      query: ({ keyword }) => ({
         url: `${USERS_URL}/search`,
-        body: query,
-        method: "POST",
+        params: {
+          keyword,
+        },
       }),
+      providesTags: ["User"],
+      keepUnusedDataFor: 5,
     }),
     logout: builder.mutation({
       query: () => ({
@@ -87,5 +90,5 @@ export const {
   useUnfollowUserMutation,
   useGetUserFollowingByIdQuery,
   useGetUserFollowersByIdQuery,
-  useSearchUserMutation,
+  useSearchUsersQuery,
 } = usersApiSlice

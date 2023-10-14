@@ -84,6 +84,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           keyword,
         },
       }),
+      providesTags: ["Post"],
       keepUnusedDataFor: 5,
     }),
   }),

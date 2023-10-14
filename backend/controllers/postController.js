@@ -17,10 +17,10 @@ const getPosts = asyncHandler(async (req, res) => {
 //@access Public
 const searchPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({
-    content: { $regex: req.params.keyword, $options: "i" },
+    content: { $regex: req.query.keyword, $options: "i" },
   })
     .populate("user")
-    .sort("likes")
+    .sort("-likes")
   res.json(posts)
 })
 
