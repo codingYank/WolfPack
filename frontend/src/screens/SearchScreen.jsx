@@ -6,7 +6,7 @@ import { theme } from '../assets/theme'
 import { useSearchPostsQuery } from '../slices/postApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSearchUsersQuery } from '../slices/usersApiSlice'
-
+import '../assets/styles/search.css'
 
 const SearchScreen = () => {
   const {keyword, page} = useParams()
@@ -20,7 +20,6 @@ const SearchScreen = () => {
 
   const showUsers = () => {
     navigate(`/search/${keyword}/users`)
-    console.log(keyword)
   }
 
   const showPosts = () => {
@@ -32,11 +31,11 @@ const SearchScreen = () => {
       <SearchBox />
       {keyword ? (
       <div>
-        <div style={{borderBottom: `1px solid ${theme.palette.secondary.main}`, marginBottom: '15px'}}>
-          <button className='search-tab' onClick={showUsers}>Users</button>
-          <button className='search-tab' onClick={showPosts}>Posts</button>
+        <div style={{borderBottom: `1px solid ${theme.palette.secondary.main}`, marginBottom: '15px'}} className='search-btns'>
+          <button className='search-tab' onClick={showUsers} disabled={page === 'users'}>Users</button>
+          <button className='search-tab' onClick={showPosts} disabled={page === 'posts'}>Posts</button>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center'}}>
           {usersLoading || postsLoading ? (
             <h3>Loading</h3>
             ) : page === 'users' ? (
