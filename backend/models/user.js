@@ -28,6 +28,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    verificationCode: {
+      type: String,
+      required: true,
+    },
+    emailVarified: {
+      type: Boolean,
+    },
     following: [],
     followers: [],
     likes: [

@@ -60,6 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   let profilePic = profilePicture || "/images/logo.jpg"
   let desc = description || ""
+  let verificationCode = Math.floor(100000 + Math.random() * 900000)
 
   const user = await User.create({
     name,
@@ -68,6 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
     handle,
     profilePicture: profilePic,
     description: desc,
+    verificationCode,
   })
 
   if (user) {
