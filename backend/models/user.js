@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    emailVarified: {
+    emailVerified: {
       type: Boolean,
     },
     following: [],
