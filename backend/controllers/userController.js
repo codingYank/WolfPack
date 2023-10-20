@@ -1,6 +1,7 @@
 import asyncHandler from "../middleware/asyncHandler.js"
 import User from "../models/user.js"
 import generateToken from "../utils/generateToken.js"
+import { sendEmail } from "../utils/sendEmail.js"
 
 //@desc Auth user & get token
 //@route POST /api/users/login
@@ -10,6 +11,15 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email })
 
   if (user && (await user.matchPassword(password))) {
+    if (user && !user.emailVerified) {
+      user.verificationCode = Math.floor(100000 + Math.random() * 900000)
+      await user.save()
+      sendEmail(
+        user.email,
+        "Verification Code",
+        `Your verification code is ${user.verificationCode}.`
+      )
+    }
     generateToken(res, user._id)
 
     res.json({
@@ -74,6 +84,11 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     generateToken(res, user._id)
+    sendEmail(
+      user.email,
+      "Verification Code",
+      `Your verification code is ${user.verificationCode}.`
+    )
 
     res.status(201).json({
       _id: user._id,
