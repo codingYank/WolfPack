@@ -31,6 +31,7 @@ const authUser = asyncHandler(async (req, res) => {
       followers: user.followers,
       following: user.following,
       likes: user.likes,
+      emailVerified: user.emailVerified,
     })
   } else {
     res.status(401)
@@ -97,10 +98,34 @@ const registerUser = asyncHandler(async (req, res) => {
       handle: user.handle,
       profilePicture: user.profilePicture,
       description: user.description,
+      emailVerified: user.emailVerified,
     })
   } else {
     res.status(400)
     throw new Error("Invalid user data")
+  }
+})
+
+const verifyUserEmail = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.body.id)
+
+  if (user && user.verificationCode == req.body.verificationCode) {
+    user.emailVerified = true
+    user.verificationCode = ""
+    await user.save()
+    res.json({
+      _id: user._id,
+      name: user.name,
+      handle: user.handle,
+      profilePicture: user.profilePicture,
+      description: user.description,
+      followers: user.followers,
+      following: user.following,
+      likes: user.likes,
+      emailVerified: user.emailVerified,
+    })
+  } else {
+    throw new Error("Invalid Code")
   }
 })
 
@@ -296,6 +321,7 @@ const getUserFollowersById = asyncHandler(async (req, res) => {
 export {
   authUser,
   registerUser,
+  verifyUserEmail,
   logoutUser,
   getUserProfile,
   updateUserProfile,

@@ -4,17 +4,34 @@ import { useFormik } from 'formik'
 import { PrimaryTextField } from '../assets/components/textField'
 import { Box } from '@mui/material'
 import { Accent3Button } from '../assets/components/button'
+import { useVerifyEmailMutation } from '../slices/usersApiSlice'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../slices/authSlice'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const VerficationScreen = () => {
-  const [verficationCode, setVerficationCode] = useState('')
+const VerificationScreen = () => {
+  const [verificationCode, setVerficationCode] = useState('')
+  const { id } = useParams()
 
-  const onSubmit = (e) => {
-    console.log(e)
+  const [verifyEmail, { isLoading }] = useVerifyEmailMutation()
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const onSubmit = async (e) => {
+    const data = {
+      verificationCode: e.verificationCode,
+      id
+    }
+    console.log(data)
+    const result = await verifyEmail(data).unwrap()
+    dispatch(setCredentials(result))
+    navigate('/')
   }
 
   const formik = useFormik({
     initialValues: {
-      verficationCode
+      verificationCode
     },
     onSubmit,
     // validationSchema: loginSchema
@@ -28,13 +45,13 @@ const VerficationScreen = () => {
         style={{textAlign: 'center'}}
       >
         <PrimaryTextField 
-          id='verficationCode'
-          label="Verfication Code"  
-          value={formik.values.verficationCode} 
+          id='verificationCode'
+          label="Verification Code"  
+          value={formik.values.verificationCode} 
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.verficationCode && Boolean(formik.errors.verficationCode)}
-          helperText={formik.touched.verficationCode && formik.errors.verficationCode}  
+          error={formik.touched.verificationCode && Boolean(formik.errors.verificationCode)}
+          helperText={formik.touched.verificationCode && formik.errors.verificationCode}  
         />
         <Accent3Button type='submit'>Sign In</Accent3Button>
       </Box>
@@ -42,4 +59,4 @@ const VerficationScreen = () => {
   )
 }
 
-export default VerficationScreen
+export default VerificationScreen

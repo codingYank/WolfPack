@@ -11,6 +11,7 @@ import {
   searchUser,
   unfollowUser,
   updateUserProfile,
+  verifyUserEmail,
 } from "../controllers/userController.js"
 import { protect } from "../middleware/authMiddleware.js"
 const router = express.Router()
@@ -18,6 +19,7 @@ const router = express.Router()
 router.route("/").post(registerUser)
 router.post("/logout", logoutUser)
 router.post("/login", authUser)
+router.post("/verify", verifyUserEmail)
 router.route("/search").get(searchUser)
 router
   .route("/profile")

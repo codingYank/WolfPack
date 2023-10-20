@@ -17,6 +17,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    verifyEmail: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/verify`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     updateUser: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/profile`,
@@ -91,4 +98,5 @@ export const {
   useGetUserFollowingByIdQuery,
   useGetUserFollowersByIdQuery,
   useSearchUsersQuery,
+  useVerifyEmailMutation,
 } = usersApiSlice
