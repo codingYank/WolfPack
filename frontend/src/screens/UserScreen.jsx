@@ -9,10 +9,13 @@ import { toast } from 'react-toastify'
 import { setCredentials } from '../slices/authSlice'
 import { theme } from '../assets/theme'
 import UpdateUserScreen from './UpdateUserScreen'
+import UploadProfilePictureScreen from './UploadProfilePictureScreen'
 
 
 const UserScreen = () => {
   const [showEdit, setShowEdit] = useState(false)
+  const [showUpload, setShowUpload] = useState(false)
+
   const { id: userId } = useParams()
 
   const { userInfo } = useSelector((state) => state.auth)
@@ -29,8 +32,11 @@ const UserScreen = () => {
   const dispatch = useDispatch()
 
   const handleEdit = () => {
-    console.log('Edit profile')
     setShowEdit(true)
+  }
+
+  const handleUpload = () => {
+    setShowUpload(true)
   }
 
   const handleUnfollow = async (id) => {
@@ -65,6 +71,9 @@ const UserScreen = () => {
     {showEdit ? (
       <UpdateUserScreen show={showEdit} setShow={setShowEdit} user={user} refetch={refetch} />
     ) : null}
+    {showUpload ? (
+      <UploadProfilePictureScreen show={showUpload} setShow={setShowUpload} refetch={refetch} />
+    ) : null}
     {userLoading || postsLoading ? (
       <div>Loading</div>
         ) : userError || postError ? (
@@ -75,6 +84,9 @@ const UserScreen = () => {
         <div>
           <div style={{display: 'flex', alignItems: 'center'}}>
             <img src={user.profilePicture} alt='profile' style={{height: '250px', width: '250px', borderRadius: '999999px'}}></img>
+            {userInfo ? userId === userInfo._id ? (
+              <Accent3Button onClick={handleUpload}>Upload Profile</Accent3Button>
+            ) : (null) : (null)}
             <div>
               <h1>
                 {user.name}

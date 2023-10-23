@@ -1,4 +1,4 @@
-import { USERS_URL } from "../constants"
+import { UPLOAD_URL, USERS_URL } from "../constants"
 import { apiSlice } from "./apiSlice"
 
 export const usersApiSlice = apiSlice.injectEndpoints({
@@ -83,6 +83,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    uploadProfilePicture: builder.mutation({
+      query: (data) => ({
+        url: `${UPLOAD_URL}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 })
 
@@ -99,4 +106,5 @@ export const {
   useGetUserFollowersByIdQuery,
   useSearchUsersQuery,
   useVerifyEmailMutation,
+  useUploadProfilePictureMutation,
 } = usersApiSlice
