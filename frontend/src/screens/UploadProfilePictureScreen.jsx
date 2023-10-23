@@ -20,16 +20,10 @@ const UploadProfilePictureScreen = ({show, setShow, refetch}) => {
     formData.append('image', e.target.files[0])
     try {
       const res = await uploadProfilePicture(formData).unwrap()
-      if (res.status === 200) {
-        try {
-          const result = await updateUser({profilePicture: res.image}).unwrap()
-          dispatch(setCredentials({...result}))
-          refetch()
-          toast.success(res.message)
-        } catch (err) {
-          toast.error(err?.data?.message || err.error)
-        }
-      }
+      const result = await updateUser({profilePicture: res.image}).unwrap()
+      dispatch(setCredentials({...result}))
+      refetch()
+      toast.success(res.message)
     } catch (err) {
       toast.error(err?.data?.message || err.error)
     }
