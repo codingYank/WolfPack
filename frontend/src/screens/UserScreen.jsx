@@ -10,6 +10,9 @@ import { setCredentials } from '../slices/authSlice'
 import { theme } from '../assets/theme'
 import UpdateUserScreen from './UpdateUserScreen'
 import UploadProfilePictureScreen from './UploadProfilePictureScreen'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import EditIcon from '@mui/icons-material/Edit';
+import '../assets/styles/userScreen.css'
 
 
 const UserScreen = () => {
@@ -82,12 +85,23 @@ const UserScreen = () => {
         </div>
       ) : (
         <div>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <img src={user.profilePicture} alt='profile' style={{height: '250px', width: '250px', borderRadius: '999999px'}}></img>
-            {userInfo ? userId === userInfo._id ? (
-              <Accent3Button onClick={handleUpload}>Upload Profile</Accent3Button>
-            ) : (null) : (null)}
-            <div>
+          <div className='user-heading-container'>
+            <div className='user-heading-top'>
+              <div className='user-profile-image'>
+                <img src={user.profilePicture} alt='profile'></img>
+                {userInfo ? userId === userInfo._id ? (
+                  <Accent3Button onClick={handleUpload}><PhotoCameraIcon /></Accent3Button>
+                ) : (null) : (null)}
+              </div>
+              {userInfo ? userId === userInfo._id ? (
+                <Accent3Button type='button' onClick={handleEdit}>Edit Profile</Accent3Button>
+              ) : userInfo.following.includes(userId) ? (
+                <Accent3Button type='button' onClick={() => handleUnfollow(userId)}>Following</Accent3Button>
+              ) : (
+                <Accent3Button type='button' onClick={() => handleFollow(userId)}>Follow</Accent3Button>
+              ) : (null)}
+            </div>
+            <div className='user-details'>
               <h1>
                 {user.name}
               </h1>
@@ -98,15 +112,9 @@ const UserScreen = () => {
                 {user.description}
               </p>
             </div>
-            {userInfo ? userId === userInfo._id ? (
-              <Accent3Button type='button' onClick={handleEdit}>Edit Profile</Accent3Button>
-            ) : userInfo.following.includes(userId) ? (
-              <Accent3Button type='button' onClick={() => handleUnfollow(userId)}>Following</Accent3Button>
-            ) : (
-              <Accent3Button type='button' onClick={() => handleFollow(userId)}>Follow</Accent3Button>
-            ) : (null)}
+            
           </div>
-          <div style={{display: 'flex', justifyContent: 'space-around'}}>
+          <div style={{display: 'flex', justifyContent: 'space-around', marginBottom: '15px'}}>
             <Link to='following' style={{color: theme.palette.secondary.main, textDecoration: 'none'}}>
               Following {user.following.length}
             </Link>
@@ -114,9 +122,11 @@ const UserScreen = () => {
               Followers {user.followers.length}
             </Link>
           </div>
+          <div className='profile-posts'>
             {posts.map((post) => (
-              <Post post={post} key={post._id} />
+              <Post post={post} key={post._id} varient='outlined' />
             ))}
+          </div>
         </div>
       )
     }
