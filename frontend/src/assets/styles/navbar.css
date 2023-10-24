@@ -31,8 +31,15 @@
   justify-content: space-around;
 }
 
+.nav-image {
+  border-radius: 999999px;
+  width: 100px;
+  height: 100px;
+}
+
 .nav-profile h3, .nav-profile h4 {
   margin: 3px;
+  text-align: center;
 }
 
 .nav-profile h3 {
@@ -62,4 +69,23 @@
 
 .nav-links a:hover {
   background-color: var(--primary-light);
+}
+
+@media (max-width: 450px) {
+  .nav-sidebar {
+    width: 100px;
+  }
+
+  .nav-image {
+    width: 65px;
+    height: 65px;
+  }
+
+  .nav-links a {
+    flex-direction: column;
+  }
+
+  .nav-profile h3, .nav-profile h4 {
+    display: none;
+  }
 }

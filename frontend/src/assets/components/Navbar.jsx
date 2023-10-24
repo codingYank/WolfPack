@@ -5,6 +5,7 @@ import '../styles/navbar.css'
 import { Accent1Button, Accent2Button, Accent3Button } from './button'
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../../slices/authSlice'
 import { useLogoutMutation } from '../../slices/usersApiSlice';
@@ -34,7 +35,7 @@ const Navbar = () => {
             {userInfo ? (
               <Link to={`/user/${userInfo._id}`}>
                 <div className='nav-profile'>
-                  <img src={userInfo.profilePicture} alt='profile' style={{borderRadius: '99999px', width: '100px', height: '100px'}}></img>
+                  <img src={userInfo.profilePicture} alt='profile' className='nav-image'></img>
                   <h3>{userInfo.name}</h3>
                   <h4>{userInfo.handle}</h4>
                 </div>
@@ -49,7 +50,7 @@ const Navbar = () => {
           <Link to='/search'><SearchIcon /> Search</Link>
           {/* <Accent3Button>Post</Accent3Button> */}
         </div>
-        {userInfo ? (<Accent2Button onClick={logoutHandler} style={{marginBottom: '10px'}}>Log Out</Accent2Button>) : <div></div>}
+        {userInfo ? (<Accent2Button onClick={logoutHandler} style={{marginBottom: '10px'}}><LogoutIcon /></Accent2Button>) : <div></div>}
       </nav>
     </aside>
   )
