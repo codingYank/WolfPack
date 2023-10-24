@@ -94,10 +94,12 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       name: user.name,
-      email: user.email,
       handle: user.handle,
       profilePicture: user.profilePicture,
       description: user.description,
+      followers: user.followers,
+      following: user.following,
+      likes: user.likes,
       emailVerified: user.emailVerified,
     })
   } else {
@@ -180,12 +182,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save()
 
     res.status(200).json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      handle: updatedUser.handle,
-      profilePicture: updatedUser.profilePicture,
-      description: updatedUser.description,
+      _id: user._id,
+      name: user.name,
+      handle: user.handle,
+      profilePicture: user.profilePicture,
+      description: user.description,
+      followers: user.followers,
+      following: user.following,
+      likes: user.likes,
+      emailVerified: user.emailVerified,
     })
   } else {
     res.status(404)
@@ -250,13 +255,15 @@ const followUser = asyncHandler(async (req, res) => {
       await otheruser.save()
       const updatedUser = await user.save()
       res.status(201).json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        handle: updatedUser.handle,
-        profilePicture: updatedUser.profilePicture,
-        description: updatedUser.description,
-        followers: updatedUser.followers,
-        following: updatedUser.following,
+        _id: user._id,
+        name: user.name,
+        handle: user.handle,
+        profilePicture: user.profilePicture,
+        description: user.description,
+        followers: user.followers,
+        following: user.following,
+        likes: user.likes,
+        emailVerified: user.emailVerified,
       })
     }
   } else {
@@ -279,14 +286,15 @@ const unfollowUser = asyncHandler(async (req, res) => {
   const updatedUser = await User.findById(req.user._id)
   console.log(updatedUser)
   res.status(201).json({
-    _id: updatedUser._id,
-    name: updatedUser.name,
-    handle: updatedUser.handle,
-    profilePicture: updatedUser.profilePicture,
-    description: updatedUser.description,
-    followers: updatedUser.followers,
-    following: updatedUser.following,
-    likes: updatedUser.likes,
+    _id: user._id,
+    name: user.name,
+    handle: user.handle,
+    profilePicture: user.profilePicture,
+    description: user.description,
+    followers: user.followers,
+    following: user.following,
+    likes: user.likes,
+    emailVerified: user.emailVerified,
   })
 })
 
