@@ -17,3 +17,21 @@
   background-color: var(--secondary-main);
   color: var(--primary-main)
 }
+
+@media (max-width: 800px) {
+  .search-btns {
+    width: 400px;
+  }
+}
+
+@media (max-width: 580px) {
+  .search-btns {
+    width: 250px;
+  }
+}
+
+@media (max-width: 360px) {
+  .search-btns {
+    width: 200px;
+  }
+}

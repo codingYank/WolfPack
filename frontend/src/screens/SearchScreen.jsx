@@ -30,7 +30,8 @@ const SearchScreen = () => {
     <>
       <SearchBox />
       {keyword ? (
-      <div>
+      <div style={{display: 'flex', flexDirection: 'column',
+       alignItems: 'center'}}>
         <div style={{borderBottom: `1px solid ${theme.palette.secondary.main}`, marginBottom: '15px'}} className='search-btns'>
           <button className='search-tab' onClick={showUsers} disabled={page === 'users'}>Users</button>
           <button className='search-tab' onClick={showPosts} disabled={page === 'posts'}>Posts</button>
@@ -47,7 +48,7 @@ const SearchScreen = () => {
           ) : page === 'posts' ? (
             <>
               {posts.map((post) => (
-                <Post post={post} key={post._id} />
+                <Post post={post} key={post._id} varient='outlined' />
               ))}
             </>
           ) : (

@@ -7,8 +7,8 @@ const User = ({user}) => {
   return (
     <Link to={`/user/${user._id}`} style={{color: theme.palette.secondary.main, textDecoration: 'none'}}>
       <div className='user-card'>
-        <img src={user.profilePicture} alt='Profile' style={{width: '75px', height: '75px', borderRadius: '999999px'}}></img>
-        <div>
+        <img src={user.profilePicture} alt='Profile'></img>
+        <div className='user-card-heading'>
           <h3>{user.name}</h3>
           <p>{user.handle}</p>
         </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { PrimaryTextField } from './textField'
 import { Accent3Button } from './button'
 import { useNavigate, useParams } from 'react-router-dom'
+import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBox = () => {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ const SearchBox = () => {
         label='Search'
         onChange={(e) => setKeyword(e.target.value)}
       />
-      <Accent3Button type='submit'>Search</Accent3Button>
+      <Accent3Button type='submit'><SearchIcon /></Accent3Button>
     </form>
   )
 }

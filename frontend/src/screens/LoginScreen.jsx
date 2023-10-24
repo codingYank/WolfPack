@@ -64,7 +64,7 @@ const LoginScreen = () => {
         <h1 >Log In</h1>
         <PrimaryTextField 
           id='userName'
-          label="Email or Handle"  
+          label="Email"  
           value={formik.values.userName} 
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
