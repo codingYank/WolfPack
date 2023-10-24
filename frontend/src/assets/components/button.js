@@ -6,7 +6,7 @@ export const PrimaryButton = styled(Button)(() => ({
   color: theme.palette.secondary.main,
   fontWeight: "bold",
   backgroundColor: theme.palette.primary.main,
-  minWidth: "150px",
+  minWidth: "15px",
   borderRadius: "12000px",
   border: `1px solid ${theme.palette.secondary.main}`,
   "&:hover": {
@@ -22,7 +22,7 @@ export const SecondaryButton = styled(Button)(() => ({
   color: theme.palette.primary.main,
   fontWeight: "bold",
   backgroundColor: theme.palette.secondary.main,
-  minWidth: "150px",
+  minWidth: "15px",
   borderRadius: "12000px",
   // border: `1px solid ${theme.palette.secondary.main}`,
   "&:hover": {
@@ -35,7 +35,7 @@ export const Accent1Button = styled(Button)(() => ({
   color: theme.palette.primary.main,
   fontWeight: "bold",
   backgroundColor: theme.palette.accent1.main,
-  minWidth: "150px",
+  minWidth: "15px",
   borderRadius: "12000px",
   // border: `1px solid ${theme.palette.secondary.main}`,
   "&:hover": {
@@ -48,7 +48,7 @@ export const Accent2Button = styled(Button)(() => ({
   color: theme.palette.primary.main,
   fontWeight: "bold",
   backgroundColor: theme.palette.accent2.main,
-  minWidth: "150px",
+  minWidth: "15px",
   borderRadius: "12000px",
   // border: `1px solid ${theme.palette.secondary.main}`,
   "&:hover": {
@@ -61,7 +61,7 @@ export const Accent3Button = styled(Button)(() => ({
   color: theme.palette.primary.main,
   fontWeight: "bold",
   backgroundColor: theme.palette.accent3.main,
-  minWidth: "150px",
+  minWidth: "15px",
   borderRadius: "12000px",
   // border: `1px solid ${theme.palette.secondary.main}`,
   "&:hover": {

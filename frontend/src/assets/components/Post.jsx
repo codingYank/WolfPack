@@ -5,6 +5,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import LoopIcon from '@mui/icons-material/Loop';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
@@ -97,7 +98,7 @@ const Post = ({post, varient, refetch}) => {
             </Link>
             {/* Add condition to check if post is by signed in user */}
             {post.user._id === userInfo?._id ? (
-              <Accent2Button onClick={() => onDelete(post._id)}>Delete</Accent2Button>
+              <Accent2Button onClick={() => onDelete(post._id)}><DeleteIcon /></Accent2Button>
             ) : (
             null
             )}
@@ -157,7 +158,7 @@ const Post = ({post, varient, refetch}) => {
           </Link>
           {/* Add condition to check if post is by signed in user */}
           {post.user._id === userInfo?._id ? (
-            <Accent2Button onClick={() => onDelete(post._id)}>Delete</Accent2Button>
+            <Accent2Button onClick={() => onDelete(post._id)}><DeleteIcon /></Accent2Button>
           ) : (
            null
           )}
