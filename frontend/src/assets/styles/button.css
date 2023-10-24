@@ -1,0 +1,11 @@
+.accent1btn {
+  background-color: var(--accent1-main);
+  padding: 5px 5px;
+  border-radius: 99999px;
+  color: var(--primary-main);
+  cursor: pointer;
+}
+
+.accent1btn:hover {
+  background-color: var(--accent1-light);
+}
