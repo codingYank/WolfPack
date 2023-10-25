@@ -69,7 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Handle not available")
   }
 
-  let profilePic = profilePicture || "/images/logo.jpg"
+  let profilePic = profilePicture || "/images/logo.png"
   let desc = description || ""
   let verificationCode = Math.floor(100000 + Math.random() * 900000)
 
