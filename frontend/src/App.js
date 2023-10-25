@@ -1,15 +1,5 @@
 import React from "react"
-import {
-  Accent1Button,
-  Accent2Button,
-  Accent3Button,
-  PrimaryButton,
-  SecondaryButton,
-} from "./assets/components/button"
 import { theme } from "./assets/theme"
-import Post from "./assets/components/Post"
-import { posts } from "./posts"
-import LoginScreen from "./screens/LoginScreen"
 import { Outlet } from "react-router-dom"
 import Navbar from "./assets/components/Navbar"
 import { ToastContainer } from "react-toastify"

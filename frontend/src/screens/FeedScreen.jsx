@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useGetMyFeedQuery, useGetPostsQuery } from '../slices/postApiSlice'
+import { useGetMyFeedQuery } from '../slices/postApiSlice'
 import Post from '../assets/components/Post'
 import { useSelector } from 'react-redux'
 import AddPost from '../assets/components/AddPost'
