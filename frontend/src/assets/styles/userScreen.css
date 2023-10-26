@@ -1,6 +1,7 @@
 .user-heading-container {
   display: flex;
   flex-direction: column;
+  padding-top: 15px;
   /* align-items: center; */
 }
 
