@@ -82,7 +82,7 @@ const Post = ({post, varient, refetch}) => {
 
   if (post.repostedBy) {
     return (
-      <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
+      <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0 ${theme.palette.secondary.main}`}}>
         <Link to={`/user/${post.repostedBy._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
           <h6 style={{margin: 0, marginBottom: '5px'}}>Reposted by {post.repostedBy.name}</h6>
         </Link>
@@ -130,7 +130,7 @@ const Post = ({post, varient, refetch}) => {
               {(isLiked) ? (
                 <>
                   <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
-                  <span style={{color: theme.palette.secondary.accent2}}>{likes}</span>
+                  <span style={{color: theme.palette.accent2.main}}>{likes}</span>
                 </>
                 ) : (
                   <>
@@ -145,7 +145,7 @@ const Post = ({post, varient, refetch}) => {
     )
   } else {
     return (
-      <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px'}}>
+      <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0px ${theme.palette.secondary.main}`}}>
         <div className='post-heading'>
           <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
             <div className='profile-info-container'>
@@ -190,7 +190,7 @@ const Post = ({post, varient, refetch}) => {
             {(isLiked) ? (
               <>
                 <FavoriteIcon sx={{ color: theme.palette.accent2.main}} />
-                <span style={{color: theme.palette.secondary.accent2}}>{likes}</span>
+                <span style={{color: theme.palette.accent2.main}}>{likes}</span>
               </>
               ) : (
                 <>
