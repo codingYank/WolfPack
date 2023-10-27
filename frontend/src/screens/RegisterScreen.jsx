@@ -117,7 +117,7 @@ const RegisterScreen = () => {
           helperText={formik.touched.confirmPassword && formik.errors.confirmPassword} 
         />
         <Accent3Button type='submit' disabled={isLoading}>Register</Accent3Button>
-        <Link to={'/login'} style={{ color: theme.palette.secondary.main }}>Already have an account?</Link>
+        <Link to={'/login'} style={{ color: theme.palette.secondary.main }}>Sign into existing account</Link>
       </Box>
     </FormContainer>
   )
