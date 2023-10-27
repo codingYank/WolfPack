@@ -58,6 +58,12 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Passwords don't match")
   }
 
+  console.log(handle[0])
+
+  if (handle[0] !== "@") {
+    throw new Error("Handles must start with @")
+  }
+
   const userExists = await User.findOne({ email })
   const handleTaken = await User.findOne({ handle })
 
