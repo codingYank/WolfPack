@@ -3,8 +3,9 @@ import { createTheme } from "@mui/material"
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "hsl(184, 100%, 3%)",
-      light: "hsl(184, 100%, 5%)",
+      dark: "hsl(0, 0%, 2%)",
+      main: "hsl(0, 0%, 3%)",
+      light: "hsl(0, 0%, 3%, .7)",
     },
     secondary: {
       main: "hsl(0, 0%, 96%)",

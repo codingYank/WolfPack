@@ -1,5 +1,6 @@
 .nav-sidebar {
   height: 100vh;
+  background-color: var(--primary-dark);
   box-shadow: -5px 0px 5px -6px var(--secondary-main) inset;
   display: flex;
   flex-direction: column;
