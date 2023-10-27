@@ -7,7 +7,7 @@ import User from "../models/user.js"
 //@access Public
 const getPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ parent: null })
-    .populate("user")
+    .populate("user", "name handle profilePicture")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -20,7 +20,7 @@ const searchPosts = asyncHandler(async (req, res) => {
     const posts = await Post.find({
       content: { $regex: req.query.keyword, $options: "i" },
     })
-      .populate("user")
+      .populate("user", "name handle profilePicture")
       .sort("-likes")
     res.json(posts)
   }
@@ -40,9 +40,9 @@ const getMyFeed = asyncHandler(async (req, res) => {
     ],
     parent: null,
   })
-    .populate("user")
+    .populate("user", "name handle profilePicture")
     .populate("quoting")
-    .populate("repostedBy")
+    .populate("repostedBy", "name handle profilePicture")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -52,9 +52,9 @@ const getMyFeed = asyncHandler(async (req, res) => {
 //@access Public
 const getMyPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user: req.user._id, parent: null })
-    .populate("user")
+    .populate("user", "name handle profilePicture")
     .populate("quoting")
-    .populate("repostedBy")
+    .populate("repostedBy", "name handle profilePicture")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -64,9 +64,9 @@ const getMyPosts = asyncHandler(async (req, res) => {
 //@access Public
 const getPostsByUserId = asyncHandler(async (req, res) => {
   const posts = await Post.find({ user: req.params.id, parent: null })
-    .populate("user")
+    .populate("user", "name handle profilePicture")
     .populate("quoting")
-    .populate("repostedBy")
+    .populate("repostedBy", "name handle profilePicture")
     .sort("-createdAt")
   res.json(posts)
 })
@@ -76,9 +76,9 @@ const getPostsByUserId = asyncHandler(async (req, res) => {
 //@access Public
 const getPostById = asyncHandler(async (req, res) => {
   let post = await Post.findById(req.params.id)
-    .populate("user")
+    .populate("user", "name handle profilePicture")
     .populate("quoting")
-    .populate("repostedBy")
+    .populate("repostedBy", "name handle profilePicture")
     .populate({
       path: "comments",
       model: "Post",
