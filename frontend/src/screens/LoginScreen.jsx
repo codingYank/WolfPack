@@ -82,7 +82,7 @@ const LoginScreen = () => {
           helperText={formik.touched.password && formik.errors.password} 
         />
         <Accent3Button type='submit' disabled={isLoading}>Sign In</Accent3Button>
-        <Link to={ redirect ? `/register?redirect=${redirect}` : '/register'} style={{ color: theme.palette.secondary.main }}>Don't have an account?</Link>
+        <Link to={ redirect ? `/register?redirect=${redirect}` : '/register'} style={{ color: theme.palette.secondary.main }}>Create an account</Link>
       </Box>
     </FormContainer>
   )

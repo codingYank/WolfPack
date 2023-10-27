@@ -17,9 +17,11 @@ const FollowingScreen = () => {
       ) : (
       <>
         <h1>Following</h1>
-        {data.map(user => (
-        <User user={user} key={user._id} />
-      ))}
+        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+          {data.map(user => (
+            <User user={user} key={user._id} />
+          ))}
+        </div>
       </>
     )}
     </>

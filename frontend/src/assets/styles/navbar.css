@@ -1,6 +1,6 @@
 .nav-sidebar {
   height: 100vh;
-  border-right: 1px solid var(--secondary-main);
+  box-shadow: -5px 0px 5px -6px var(--secondary-main) inset;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,6 +69,7 @@
 
 .nav-links a:hover {
   background-color: var(--primary-light);
+  box-shadow: -5px 0px 5px -6px var(--secondary-main) inset;
 }
 
 @media (max-width: 450px) {

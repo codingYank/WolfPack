@@ -9,6 +9,7 @@ export const theme = createTheme({
     secondary: {
       main: "hsl(0, 0%, 96%)",
       dark: "hsl(0, 0%, 86%)",
+      darker: "hsl(0, 0%, 56%)",
     },
     accent1: {
       main: "hsl(164, 93%, 40%)",
