@@ -23,6 +23,8 @@ import FollowersScreen from "./screens/FollowersScreen"
 import PrivateRoute from "./assets/components/PrivateRoute"
 import ValidatedRoute from "./assets/components/ValidatedRoute"
 import VerficationScreen from "./screens/VerficationScreen"
+import ResetPasswordScreen from "./screens/ResetPasswordScreen"
+import ReqResetPasswordScreen from "./screens/ReqResetPasswordScreen"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +35,11 @@ const router = createBrowserRouter(
       <Route path="/user/:id/following" element={<FollowingScreen />} />
       <Route path="/user/:id/followers" element={<FollowersScreen />} />
       <Route path="/post/:id" element={<PostScreen />} />
+      <Route path="/reqestPasswordReset" element={<ReqResetPasswordScreen />} />
+      <Route
+        path="/resetPassword/:id/:code"
+        element={<ResetPasswordScreen />}
+      />
       <Route path="/verify/:id" element={<VerficationScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/login" element={<LoginScreen />} />
