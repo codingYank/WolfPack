@@ -11,11 +11,15 @@ import { toast } from 'react-toastify'
 const ReqResetPasswordScreen = () => {
   const [email, setEmail] = useState('')
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     console.log(e)
     try {
-      reqPasswordReset(e)
-      toast.success('Email sent')
+      const res = await reqPasswordReset(e)
+      if (res.status === 200) {
+        toast.success('Email sent')
+      } else {
+        toast.error(res.error?.data?.message || res.error.error)
+      }
     } catch(err) {
       toast.error(err?.data?.message || err.error)
     }

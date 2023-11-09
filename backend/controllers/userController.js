@@ -39,7 +39,6 @@ const authUser = asyncHandler(async (req, res) => {
     res.status(401)
     throw new Error("Invalid credientials")
   }
-  res.send("auth user")
 })
 
 //@desc Register user & get token
@@ -149,8 +148,9 @@ const reqestResetPassword = asyncHandler(async (req, res) => {
     sendEmail(
       user.email,
       "Reset Password",
-      `Use the following link to reset your password: ${process.env.CLIENT_URL}resetPassword/${user._id}/${user.resetPassword}`
+      `Use the following link to reset your password: ${process.env.CLIENT_URL}resetPassword/${user._id}/${code}`
     )
+    res.status(200)
   } else {
     res.status(404)
     throw new Error("User not found")
@@ -161,10 +161,11 @@ const resetPassword = asyncHandler(async (req, res) => {
   const user = await User.findById(req.body.id)
 
   if (user) {
-    if (user.resetPassword === req.body.code) {
+    if (await user.matchCode(req.body.code)) {
       if (req.body.password === req.body.confirmPassword) {
         user.password = req.body.password
         await user.save()
+        res.status(200)
       } else {
         res.status(404)
         throw new Error("Passwords must match")
