@@ -76,7 +76,6 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.matchCode = async function (enteredCode) {
   return await bcrypt.compare(enteredCode, this.resetPassword)
 }
-
 const User = mongoose.model("User", userSchema)
 
 export default User
