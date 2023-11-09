@@ -83,6 +83,7 @@ const LoginScreen = () => {
         />
         <Accent3Button type='submit' disabled={isLoading}>Sign In</Accent3Button>
         <Link to={ redirect ? `/register?redirect=${redirect}` : '/register'} style={{ color: theme.palette.secondary.main }}>Create an account</Link>
+        <Link to={'/reqestPasswordReset'} style={{ color: theme.palette.secondary.main }}>Forgot Password</Link>
       </Box>
     </FormContainer>
   )

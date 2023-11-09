@@ -8,6 +8,8 @@ import {
   getUserProfile,
   logoutUser,
   registerUser,
+  reqestResetPassword,
+  resetPassword,
   searchUser,
   unfollowUser,
   updateUserProfile,
@@ -19,6 +21,8 @@ const router = express.Router()
 router.route("/").post(registerUser)
 router.post("/logout", logoutUser)
 router.post("/login", authUser)
+router.post("/requestPasswordReset", reqestResetPassword)
+router.post("/resetPassword", resetPassword)
 router.post("/verify", verifyUserEmail)
 router.route("/search").get(searchUser)
 router

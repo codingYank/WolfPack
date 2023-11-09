@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema(
     verificationCode: {
       type: String,
     },
+    resetPassword: {
+      type: String,
+    },
     emailVerified: {
       type: Boolean,
     },
@@ -62,14 +65,17 @@ userSchema.pre("save", async function (next) {
 })
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("verificationCode")) {
+  if (!this.isModified("resetPassword")) {
     next()
   }
 
   const salt = await bcrypt.genSalt(10)
-  this.verificationCode = await bcrypt.hash(this.verificationCode, salt)
+  this.resetPassword = await bcrypt.hash(this.resetPassword, salt)
 })
 
+userSchema.methods.matchCode = async function (enteredCode) {
+  return await bcrypt.compare(enteredCode, this.resetPassword)
+}
 const User = mongoose.model("User", userSchema)
 
 export default User

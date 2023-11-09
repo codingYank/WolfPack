@@ -2,6 +2,8 @@ import asyncHandler from "../middleware/asyncHandler.js"
 import User from "../models/user.js"
 import generateToken from "../utils/generateToken.js"
 import { sendEmail } from "../utils/sendEmail.js"
+import dotenv from "dotenv"
+dotenv.config()
 
 //@desc Auth user & get token
 //@route POST /api/users/login
@@ -37,7 +39,6 @@ const authUser = asyncHandler(async (req, res) => {
     res.status(401)
     throw new Error("Invalid credientials")
   }
-  res.send("auth user")
 })
 
 //@desc Register user & get token
@@ -134,6 +135,48 @@ const verifyUserEmail = asyncHandler(async (req, res) => {
     })
   } else {
     throw new Error("Invalid Code")
+  }
+})
+
+const reqestResetPassword = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email })
+
+  if (user) {
+    let code = Math.floor(1000000 + Math.random() * 9000000)
+    user.resetPassword = code
+    await user.save()
+    sendEmail(
+      user.email,
+      "Reset Password",
+      `Use the following link to reset your password: ${process.env.CLIENT_URL}resetPassword/${user._id}/${code}`
+    )
+    res.status(200)
+  } else {
+    res.status(404)
+    throw new Error("User not found")
+  }
+})
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.body.id)
+
+  if (user) {
+    if (await user.matchCode(req.body.code)) {
+      if (req.body.password === req.body.confirmPassword) {
+        user.password = req.body.password
+        await user.save()
+        res.status(200)
+      } else {
+        res.status(404)
+        throw new Error("Passwords must match")
+      }
+    } else {
+      res.status(404)
+      throw new Error("Unauthorized")
+    }
+  } else {
+    res.status(404)
+    throw new Error("User not found")
   }
 })
 
@@ -336,6 +379,8 @@ export {
   authUser,
   registerUser,
   verifyUserEmail,
+  reqestResetPassword,
+  resetPassword,
   logoutUser,
   getUserProfile,
   updateUserProfile,
