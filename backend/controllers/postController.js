@@ -63,7 +63,13 @@ const getMyPosts = asyncHandler(async (req, res) => {
 //@route GET /api/posts/user
 //@access Public
 const getPostsByUserId = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ user: req.params.id, parent: null })
+  const posts = await Post.find({
+    $or: [
+      { user: req.params.id, parent: null, quoting: null },
+      { repostedBy: req.params.id },
+      { user: req.params.id, parent: null, quoting: req.params.id },
+    ],
+  })
     .populate("user", "name handle profilePicture")
     .populate("quoting")
     .populate("repostedBy", "name handle profilePicture")
