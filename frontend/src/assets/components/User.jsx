@@ -10,7 +10,7 @@ const User = ({user}) => {
         <img src={user.profilePicture} alt='Profile'></img>
         <div className='user-card-heading'>
           <h3>{user.name}</h3>
-          <p>{user.handle}</p>
+          <p>@{user.handle}</p>
         </div>
       </div>
     </Link>

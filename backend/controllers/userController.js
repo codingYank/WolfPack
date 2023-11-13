@@ -59,12 +59,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Passwords don't match")
   }
 
-  console.log(handle[0])
-
-  if (handle[0] !== "@") {
-    throw new Error("Handles must start with @")
-  }
-
   const userExists = await User.findOne({ email })
   const handleTaken = await User.findOne({ handle })
 
@@ -222,6 +216,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
   if (user) {
+    const handleTaken = await User.findOne({ handle: req.body.handle })
+    if (handleTaken) {
+      res.status(400)
+      throw new Error("Handle not available")
+    }
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
     user.handle = req.body.handle || user.handle

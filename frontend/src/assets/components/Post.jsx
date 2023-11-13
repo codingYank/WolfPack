@@ -92,7 +92,7 @@ const Post = ({post, varient, refetch}) => {
                 <img src={post.user.profilePicture} alt='profile'></img>
                 <div className='profile-info'>
                   <h2>{post.user.name}</h2>
-                  <h3>{post.user.handle}</h3>
+                  <h3>@{post.user.handle}</h3>
                 </div>
               </div>
             </Link>
@@ -152,7 +152,7 @@ const Post = ({post, varient, refetch}) => {
               <img src={post.user.profilePicture} alt='profile'></img>
               <div className='profile-info'>
                 <h2>{post.user.name}</h2>
-                <h3>{post.user.handle}</h3>
+                <h3>@{post.user.handle}</h3>
               </div>
             </div>
           </Link>

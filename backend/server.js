@@ -13,8 +13,6 @@ const port = process.env.PORT || 5000
 
 connectDB()
 
-console.log(process.env.CLIENT_SECRET)
-
 const app = express()
 
 //body parser middleware

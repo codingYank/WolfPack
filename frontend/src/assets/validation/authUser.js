@@ -5,7 +5,9 @@ export const registerUserSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter valid email")
     .required("Email is required"),
-  handle: Yup.string().required("Handle is required"),
+  handle: Yup.string()
+    .required("Handle is required")
+    .matches(/^\w*$/, "Invalid Handle"),
   password: Yup.string()
     .required("Required")
     .min(5, "Password must be at least 5 characters"),
