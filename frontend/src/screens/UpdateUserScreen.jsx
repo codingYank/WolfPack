@@ -24,8 +24,13 @@ const UpdateUserScreen = ({show, setShow, user, refetch}) => {
 
   const onSubmit = async (data) => {
     console.log(data)
+    const d = {
+      description: data.description,
+      handle: "@" + data.handle,
+      name: data.name
+    }
     try {
-      const updatedUser = await updateUser(data).unwrap()
+      const updatedUser = await updateUser(d).unwrap()
       dispatch(setCredentials({...updatedUser}))
       refetch()
       setShow(false)
