@@ -8,6 +8,24 @@ import User from "../models/user.js"
 const getPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ parent: null })
     .populate("user", "name handle profilePicture")
+    .populate({
+      path: "parent",
+      model: "Post",
+      populate: {
+        path: "user",
+
+        model: "User",
+      },
+      populate: {
+        path: "parent",
+        model: "Post",
+        populate: {
+          path: "user",
+
+          model: "User",
+        },
+      },
+    })
     .sort("-createdAt")
   res.json(posts)
 })
@@ -21,6 +39,14 @@ const searchPosts = asyncHandler(async (req, res) => {
       content: { $regex: req.query.keyword, $options: "i" },
     })
       .populate("user", "name handle profilePicture")
+      .populate({
+        path: "parent",
+        model: "Post",
+        populate: {
+          path: "user",
+          model: "User",
+        },
+      })
       .sort("-likes")
     res.json(posts)
   }
@@ -41,7 +67,18 @@ const getMyFeed = asyncHandler(async (req, res) => {
     parent: null,
   })
     .populate("user", "name handle profilePicture")
-    .populate("quoting")
+    .populate({
+      path: "quoting",
+      model: "Post",
+      populate: {
+        path: "parent",
+        model: "Post",
+        populate: {
+          path: "user",
+          model: "User",
+        },
+      },
+    })
     .populate("repostedBy", "name handle profilePicture")
     .sort("-createdAt")
   res.json(posts)
@@ -55,6 +92,7 @@ const getMyPosts = asyncHandler(async (req, res) => {
     .populate("user", "name handle profilePicture")
     .populate("quoting")
     .populate("repostedBy", "name handle profilePicture")
+
     .sort("-createdAt")
   res.json(posts)
 })
@@ -86,13 +124,37 @@ const getPostById = asyncHandler(async (req, res) => {
     .populate("quoting")
     .populate("repostedBy", "name handle profilePicture")
     .populate({
-      path: "comments",
+      path: "parent",
       model: "Post",
       populate: {
         path: "user",
+
         model: "User",
       },
     })
+    .populate({
+      path: "comments",
+      model: "Post",
+      populate: [
+        {
+          path: "user",
+          model: "User",
+        },
+        {
+          path: "parent",
+          populate: {
+            path: "user",
+            model: "User",
+          },
+          model: "Post",
+        },
+      ],
+    })
+
+  // .populate({
+  //   path: "comments.parent",
+  //   model: "Post",
+  // })
 
   if (post) {
     return res.status(200).json(post)

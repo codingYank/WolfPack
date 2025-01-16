@@ -37,7 +37,7 @@ const Navbar = () => {
                 <div className='nav-profile'>
                   <img src={userInfo.profilePicture} alt='profile' className='nav-image'></img>
                   <h3>{userInfo.name}</h3>
-                  <h4>@{userInfo.handle}</h4>
+                  <h4>{userInfo.handle}</h4>
                 </div>
               </Link>
             ) : (

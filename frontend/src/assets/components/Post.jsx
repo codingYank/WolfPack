@@ -83,6 +83,13 @@ const Post = ({post, varient, refetch}) => {
   if (post.repostedBy) {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0 ${theme.palette.secondary.main}`}}>
+        {post.quoting.parent ? (
+          <Link to={`/post/${post.quoting.parent._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+            <h6 style={{margin: 0, marginBottom: '5px'}}>Replying to {post.quoting.parent.user.handle}</h6>
+          </Link>
+        ) : (
+          null
+        )}
         <Link to={`/user/${post.repostedBy._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
           <h6 style={{margin: 0, marginBottom: '5px'}}>Reposted by {post.repostedBy.name}</h6>
         </Link>
@@ -92,7 +99,7 @@ const Post = ({post, varient, refetch}) => {
                 <img src={post.user.profilePicture} alt='profile'></img>
                 <div className='profile-info'>
                   <h2>{post.user.name}</h2>
-                  <h3>@{post.user.handle}</h3>
+                  <h3>{post.user.handle}</h3>
                 </div>
               </div>
             </Link>
@@ -146,13 +153,20 @@ const Post = ({post, varient, refetch}) => {
   } else {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0px ${theme.palette.secondary.main}`}}>
+        {post.parent ? (
+          <Link to={`/post/${post.parent._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+            <h6 style={{margin: 0, marginBottom: '5px'}}>Replying to {post.parent.user.handle}</h6>
+          </Link>
+        ) : (
+          null
+        )}
         <div className='post-heading'>
           <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
             <div className='profile-info-container'>
               <img src={post.user.profilePicture} alt='profile'></img>
               <div className='profile-info'>
                 <h2>{post.user.name}</h2>
-                <h3>@{post.user.handle}</h3>
+                <h3>{post.user.handle}</h3>
               </div>
             </div>
           </Link>

@@ -11,9 +11,12 @@ import { Link } from 'react-router-dom'
 import '../assets/styles/post.css'
 import Post from '../assets/components/Post';
 import AddComment from '../assets/components/AddComment';
+import { useSelector } from 'react-redux';
 
 const PostScreen = () => {
   const { id: postId } = useParams()
+
+  const { userInfo } = useSelector((state) => state.auth)
 
   const {data: post, isLoading, refetch, error} = useGetPostByIdQuery(postId)
 
@@ -27,7 +30,11 @@ const PostScreen = () => {
             <Post post={comment} key={comment._id} refetch={refetch} />
           ))}
         </div>
-        <AddComment refetch={refetch} />
+        {userInfo && userInfo.emailVerified ? (
+          <AddComment refetch={refetch} />
+        ) : (
+          null
+        )} 
       </div>
     )}
     </>
