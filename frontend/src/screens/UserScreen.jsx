@@ -106,7 +106,7 @@ const UserScreen = () => {
                 {user.name}
               </h1>
               <h3>
-                @{user.handle}
+                {user.handle}
               </h3>
               <p>
                 {user.description}
