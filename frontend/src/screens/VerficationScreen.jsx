@@ -44,6 +44,7 @@ const VerificationScreen = () => {
         sx={{display: 'flex', flexDirection: 'column', gap: '30px'}}
         style={{textAlign: 'center'}}
       >
+        <label htmlFor='verificationCode'>Enter the code sent to your email</label>
         <PrimaryTextField 
           id='verificationCode'
           label="Verification Code"  
