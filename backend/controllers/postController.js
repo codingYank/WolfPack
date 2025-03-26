@@ -6,7 +6,7 @@ import User from "../models/user.js"
 //@route GET /api/posts
 //@access Public
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ parent: null })
+  const posts = await Post.find({ parent: null, deleted: false || null })
     .populate("user", "name handle profilePicture")
     .populate({
       path: "parent",
@@ -36,6 +36,7 @@ const getPosts = asyncHandler(async (req, res) => {
 const searchPosts = asyncHandler(async (req, res) => {
   if (req.query.keyword) {
     const posts = await Post.find({
+      deleted: false || null,
       content: { $regex: req.query.keyword, $options: "i" },
     })
       .populate("user", "name handle profilePicture")
@@ -64,6 +65,7 @@ const getMyFeed = asyncHandler(async (req, res) => {
       { repostedBy: req.user.following },
       { repostedBy: req.user._id },
     ],
+    deleted: false || null,
     parent: null,
   })
     .populate("user", "name handle profilePicture")
@@ -88,7 +90,7 @@ const getMyFeed = asyncHandler(async (req, res) => {
 //@route GET /api/posts/myposts
 //@access Public
 const getMyPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ user: req.user._id, parent: null })
+  const posts = await Post.find({ user: req.user._id, parent: null, deleted: false || null })
     .populate("user", "name handle profilePicture")
     .populate("quoting")
     .populate("repostedBy", "name handle profilePicture")
@@ -101,7 +103,7 @@ const getMyPosts = asyncHandler(async (req, res) => {
 //@route GET /api/posts/user
 //@access Public
 const getPostsByUserId = asyncHandler(async (req, res) => {
-  const posts = await Post.find({
+  const posts = await Post.find({deleted: false || null,
     $or: [
       { user: req.params.id, parent: null, quoting: null },
       { repostedBy: req.params.id },
@@ -112,7 +114,14 @@ const getPostsByUserId = asyncHandler(async (req, res) => {
     .populate("quoting")
     .populate("repostedBy", "name handle profilePicture")
     .sort("-createdAt")
-  res.json(posts)
+    if (posts) {
+      posts.map(post => {
+        if (post.quoting?.deleted === true) {
+          post.quoting = "Post Deleted"
+        }
+      })
+      res.json(posts)
+    }
 })
 
 //@desc fetches a post
@@ -156,7 +165,7 @@ const getPostById = asyncHandler(async (req, res) => {
   //   model: "Post",
   // })
 
-  if (post) {
+  if (post && !post.deleted) {
     return res.status(200).json(post)
   } else {
     res.status(404)
@@ -287,7 +296,44 @@ const repost = asyncHandler(async (req, res) => {
     await repost.save()
 
     const updatedUser = await User.findById(req.user._id)
-    console.log(updatedUser)
+    
+    res.status(201).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      handle: updatedUser.handle,
+      profilePicture: updatedUser.profilePicture,
+      description: updatedUser.description,
+      followers: updatedUser.followers,
+      following: updatedUser.following,
+      likes: updatedUser.likes,
+    })
+  }
+})
+
+// @desc quote post
+//@route POST /api/posts/quotepost/:id
+//@access Private
+const quotePost = asyncHandler(async (req, res) => {
+  // const user = await User.findById(req.user._id)/
+  console.log(req.body)
+  const post = await Post.findByIdAndUpdate(req.params.id, {
+    $push: {
+      quotePosts: req.user._id,
+    },
+  })
+
+  if (post) {
+    const repost = new Post({
+      user: req.user,
+      repostedBy: req.user._id,
+      quoting: post._id,
+      content: req.body.content,
+      image: req.body.image,
+    })
+    await repost.save()
+
+    const updatedUser = await User.findById(req.user._id)
+
     res.status(201).json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -322,19 +368,8 @@ const unRepost = asyncHandler(async (req, res) => {
 })
 
 const deletePost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id)
-
-  if (post) {
-    if (post.parent) {
-      await Post.findByIdAndUpdate(post.parent, {
-        $pull: {
-          comments: post._id,
-        },
-      })
-    }
-    await Post.deleteOne({ _id: post._id })
-    res.status(200)
-  }
+  const post = await Post.findByIdAndUpdate(req.params.id, {deleted: true})
+  res.status(200)
 })
 
 export {
@@ -349,6 +384,7 @@ export {
   likePost,
   unLikePost,
   repost,
+  quotePost,
   unRepost,
   deletePost,
 }

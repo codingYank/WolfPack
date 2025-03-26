@@ -3,6 +3,11 @@
   margin: 10px 0px 4px 0px;
 }
 
+.post .quoted-post {
+  width: 480px;
+  margin-bottom: 10px;
+}
+
 .post-heading, .profile-info-container {
   display: flex;
   align-items: center;
@@ -43,12 +48,20 @@
   .post {
     width: 300px;
   }
+  .post .quoted-post {
+    width: 280px;
+  }
+  
 }
 
 @media (max-width: 500px) {
   .post {
     width: 200px
   }
+
+  .post .quoted-post {
+    width: 180px;
+  }  
 
   .profile-info-container img {
     width: 50px;
@@ -68,4 +81,9 @@
   .post {
     width: 160px
   }
+
+  .post .quoted-post {
+    width: 140px;
+  }
+  
 }

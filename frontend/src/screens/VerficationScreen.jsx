@@ -23,7 +23,6 @@ const VerificationScreen = () => {
       verificationCode: e.verificationCode,
       id
     }
-    console.log(data)
     const result = await verifyEmail(data).unwrap()
     dispatch(setCredentials(result))
     navigate('/')

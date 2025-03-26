@@ -71,6 +71,13 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    quotePost: builder.mutation({
+      query: (data) => ({
+        url: `${POSTS_URL}/quotepost/${data.quotingId}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     deletePost: builder.mutation({
       query: (id) => ({
         url: `${POSTS_URL}/${id}`,
@@ -102,6 +109,7 @@ export const {
   useUnLikePostMutation,
   useRepostMutation,
   useUnRepostMutation,
+  useQuotePostMutation,
   useDeletePostMutation,
   useSearchPostsQuery,
 } = postsApiSlice
