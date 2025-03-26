@@ -1,6 +1,6 @@
-import { Paper } from '@mui/material'
+import { Modal, Paper } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Accent2Button, Accent3Button } from './button'
+import { Accent2Button, Accent3Button, PrimaryButton } from './button'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import LoopIcon from '@mui/icons-material/Loop';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -10,8 +10,8 @@ import { theme } from '../theme';
 import { Link } from 'react-router-dom'
 import '../styles/post.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { useDeletePostMutation, useLikePostMutation, useRepostMutation, useUnLikePostMutation, useUnRepostMutation } from '../../slices/postApiSlice';
-import { setCredentials } from '../../slices/authSlice';
+import { useDeletePostMutation, useLikePostMutation, useQuotePostMutation, useRepostMutation, useUnLikePostMutation, useUnRepostMutation } from '../../slices/postApiSlice';
+import { toast } from 'react-toastify'
 
 const Post = ({post, varient, refetch}) => {
   const { userInfo } = useSelector((state) => state.auth)
@@ -20,12 +20,17 @@ const Post = ({post, varient, refetch}) => {
   const [repost, {isLoading: repostLoading}] = useRepostMutation()
   const [unRepost, {isLoading: unRepostLoading}] = useUnRepostMutation()
   const [deletePost, {isLoading: deleteLoading}] = useDeletePostMutation()
+  const [quotePost, {isLoading: quoteLoading}] = useQuotePostMutation()
 
   const [isLiked, setIsLiked] = useState()
   const [likes, setLikes] = useState()
 
   const [isReposted, setIsReposted] = useState()
   const [reposts, setReposts] = useState()
+
+  const [showOptionModal, setShowOptionModal] = useState(false)
+  const [showQuoteModal, setShowQuoteModal] = useState(false)
+  const [quoteContent, setQuoteContent] = useState('')
 
   useEffect(() => {
     if (post.quoting && post.content) {
@@ -48,6 +53,33 @@ const Post = ({post, varient, refetch}) => {
 
 
   const dispatch = useDispatch()
+
+  const onCloseOptionModal = () => {
+    setShowOptionModal(false)
+  }
+
+  const onCloseQuoteModal = () => {
+    setShowQuoteModal(false)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const data = {
+      _id: post._id,
+      content: quoteContent
+    }
+    const result = await quotePost(data)
+
+    if(result.error) {
+      toast.error(result.error)
+    } else {
+      toast.success('Posted Successfully')
+      refetch()
+      setQuoteContent('')
+      setShowQuoteModal(false)
+    }
+    
+  }
 
   const onLike = async (id) => {
     if(!isLiked) {
@@ -72,6 +104,7 @@ const Post = ({post, varient, refetch}) => {
       setReposts(reposts - 1)
     }
     setIsReposted(!isReposted)
+    setShowOptionModal(false)
     if(!isReposted) {
       await repost(id)
     } else {
@@ -80,7 +113,6 @@ const Post = ({post, varient, refetch}) => {
   }
 
   const onDelete = async (id) => {
-    console.log('delete', id)
     deletePost(id)
     refetch()
   }
@@ -88,6 +120,19 @@ const Post = ({post, varient, refetch}) => {
   if (post.quoting && post.content) {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0px ${theme.palette.secondary.main}`}}>
+        <Modal className='modal-screen' open={showOptionModal} onClose={onCloseOptionModal}>
+          <div className='modal-content update-user-btns'>
+            <PrimaryButton disabled={repostLoading} onClick={() => onRepost(post._id)}>Repost</PrimaryButton>
+            <PrimaryButton onClick={() => {setShowOptionModal(false); setShowQuoteModal(true)}}>Quote Post</PrimaryButton>
+          </div>
+        </Modal>
+        <Modal className='modal-screen' open={showQuoteModal} onClose={onCloseQuoteModal}>
+          <form onSubmit={handleSubmit} className='add-post-form modal-content'>
+            <label htmlFor='post' className='post-label'>Post</label>
+            <textarea placeholder='Say Something' id='post' onChange={(e) => setQuoteContent(e.target.value)} value={quoteContent} className='post-input' ></textarea>
+            <Accent3Button type='submit' disabled={quoteLoading}>Post</Accent3Button>
+          </form>
+        </Modal>
         {post.parent ? (
           <Link to={`/post/${post.parent._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
             <h6 style={{margin: 0, marginBottom: '5px'}}>Replying to {post.parent.user.handle}</h6>
@@ -147,7 +192,7 @@ const Post = ({post, varient, refetch}) => {
             <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
             <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
           </Link>
-          <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
+          <button className='post-button' disabled={repostLoading} onClick={() => setShowOptionModal(true)}>
             {isReposted ? (
               <>
                 <LoopIcon sx={{ color: theme.palette.accent1.main}} />
@@ -182,6 +227,19 @@ const Post = ({post, varient, refetch}) => {
   } else if (post.repostedBy) {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0 ${theme.palette.secondary.main}`}}>
+        <Modal  className='modal-screen' open={showOptionModal} onClose={onCloseOptionModal}>
+          <div className='modal-content update-user-btns'>
+            <PrimaryButton disabled={repostLoading} onClick={() => onRepost(post._id)}>Repost</PrimaryButton>
+            <PrimaryButton onClick={() => {setShowOptionModal(false); setShowQuoteModal(true)}}>Quote Post</PrimaryButton>
+          </div>
+        </Modal>
+        <Modal className='modal-screen' open={showQuoteModal} onClose={onCloseQuoteModal}>
+          <form onSubmit={handleSubmit} className='add-post-form modal-content'>
+            <label htmlFor='post' className='post-label'>Post</label>
+            <textarea placeholder='Say Something' id='post' onChange={(e) => setQuoteContent(e.target.value)} value={quoteContent} className='post-input' ></textarea>
+            <Accent3Button type='submit' disabled={quoteLoading}>Post</Accent3Button>
+          </form>
+        </Modal>
         {post.quoting.parent ? (
           <Link to={`/post/${post.quoting.parent._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
             <h6 style={{margin: 0, marginBottom: '5px'}}>Replying to {post.quoting.parent.user.handle}</h6>
@@ -217,7 +275,7 @@ const Post = ({post, varient, refetch}) => {
               <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
               <span style={{color: theme.palette.secondary.main}}>{post.quoting.comments.length}</span>
             </Link>
-            <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post.quoting._id)}>
+            <button className='post-button' disabled={repostLoading} onClick={() => setShowOptionModal(true)}>
               {isReposted ? (
                 <>
                   <LoopIcon sx={{ color: theme.palette.accent1.main}} />
@@ -252,6 +310,19 @@ const Post = ({post, varient, refetch}) => {
   } else {
     return (
       <Paper variant={varient} elevation={0} className='post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0px ${theme.palette.secondary.main}`}}>
+        <Modal className='modal-screen' open={showOptionModal} onClose={onCloseOptionModal}>
+          <div className='modal-content update-user-btns'>
+            <PrimaryButton disabled={repostLoading} onClick={() => onRepost(post._id)}>Repost</PrimaryButton>
+            <PrimaryButton onClick={() => {setShowOptionModal(false); setShowQuoteModal(true)}}>Quote Post</PrimaryButton>
+          </div>
+        </Modal>
+        <Modal className='modal-screen' open={showQuoteModal} onClose={onCloseQuoteModal}>
+          <form onSubmit={handleSubmit} className='add-post-form modal-content'>
+            <label htmlFor='post' className='post-label'>Post</label>
+            <textarea placeholder='Say Something' id='post' onChange={(e) => setQuoteContent(e.target.value)} value={quoteContent} className='post-input' ></textarea>
+            <Accent3Button type='submit' disabled={quoteLoading}>Post</Accent3Button>
+          </form>
+        </Modal>
         {post.parent ? (
           <Link to={`/post/${post.parent._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
             <h6 style={{margin: 0, marginBottom: '5px'}}>Replying to {post.parent.user.handle}</h6>
@@ -284,7 +355,7 @@ const Post = ({post, varient, refetch}) => {
             <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />
             <span style={{color: theme.palette.secondary.main}}>{post.comments.length}</span>
           </Link>
-          <button className='post-button' disabled={repostLoading} onClick={() => onRepost(post._id)}>
+          <button className='post-button' disabled={repostLoading} onClick={() => setShowOptionModal(true)}>
             {isReposted ? (
               <>
                 <LoopIcon sx={{ color: theme.palette.accent1.main}} />

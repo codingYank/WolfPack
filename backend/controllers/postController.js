@@ -314,15 +314,46 @@ const repost = asyncHandler(async (req, res) => {
 //@route POST /api/posts/quotepost/:id
 //@access Private
 const quotePost = asyncHandler(async (req, res) => {
-  // const user = await User.findById(req.user._id)/
-  console.log(req.body)
   const post = await Post.findByIdAndUpdate(req.params.id, {
     $push: {
       quotePosts: req.user._id,
     },
   })
 
-  if (post) {
+  let ogPost
+
+  if (post.quoting && !post.content) {
+    ogPost = await Post.findByIdAndUpdate(req.params.id, {
+      $push: {
+        quotePosts: req.user._id,
+      },
+    })
+  }
+  console.log(ogPost)
+
+  if (post && ogPost) {
+    const repost = new Post({
+      user: req.user,
+      repostedBy: req.user._id,
+      quoting: ogPost._id,
+      content: req.body.content,
+      image: req.body.image,
+    })
+    await repost.save()
+
+    const updatedUser = await User.findById(req.user._id)
+
+    res.status(201).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      handle: updatedUser.handle,
+      profilePicture: updatedUser.profilePicture,
+      description: updatedUser.description,
+      followers: updatedUser.followers,
+      following: updatedUser.following,
+      likes: updatedUser.likes,
+    })
+  } else if (post) {
     const repost = new Post({
       user: req.user,
       repostedBy: req.user._id,

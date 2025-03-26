@@ -73,7 +73,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
     quotePost: builder.mutation({
       query: (data) => ({
-        url: `${POSTS_URL}/quotepost/${data.quotingId}`,
+        url: `${POSTS_URL}/quotepost/${data._id}`,
         method: "POST",
         body: data,
       }),
