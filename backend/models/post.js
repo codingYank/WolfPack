@@ -14,6 +14,15 @@ const postSchema = new mongoose.Schema(
     deleted: {
       type: Boolean
     },
+    isQuoting: {
+      type: Boolean
+    },
+    isComment: {
+      type: Boolean
+    },
+    isRepost: {
+      type: Boolean
+    },
     content: {
       type: String,
     },

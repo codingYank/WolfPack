@@ -176,7 +176,7 @@ const Post = ({post, varient, refetch}) => {
                 <img src={post.user.profilePicture} alt='profile'></img>
                 <div className='profile-info'>
                   <h2>{post.user.name}</h2>
-                  <h3>{post.user.handle}</h3>
+                  <h3>{post.quoting.user.handle}</h3>
                 </div>
               </div>
             </Link>
@@ -270,6 +270,33 @@ const Post = ({post, varient, refetch}) => {
           <Link to={`/post/${post.quoting._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
             <p>{post.quoting.content}</p>
           </Link>
+          {post.quoting.quoting ? (
+            <Paper variant={varient} elevation={0} className='post quoted-post' sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.secondary.main, padding: '10px', borderRadius: '10px', boxShadow: `0 0px 4px 0 ${theme.palette.secondary.main}`}}>
+            {post.quoting.parent ? (
+              <Link to={`/post/${post.quoting.parent._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+                <h6 style={{margin: 0, marginBottom: '5px'}}>Replying to {post.quoting.parent.user.handle}</h6>
+              </Link>
+            ) : (
+              null
+            )}
+            
+              <div className='post-heading'>
+                <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+                  <div className='profile-info-container'>
+                    <img src={post.user.profilePicture} alt='profile'></img>
+                    <div className='profile-info'>
+                      <h2>{post.user.name}</h2>
+                      <h3>{post.user.handle}</h3>
+                    </div>
+                  </div>
+                </Link>
+               
+              </div>
+              <Link to={`/post/${post.quoting._id}`} style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+                <p>{post.quoting.content}</p>
+              </Link>
+            </Paper>
+          ) : null}
           <div className='post-icons'>
             <Link to={`/post/${post._id}`} className='post-button' style={{textDecoration: 'none'}}>
               <ChatBubbleOutlineIcon sx={{ color: theme.palette.secondary.main}} />

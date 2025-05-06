@@ -1,3 +1,4 @@
+import { populate } from "dotenv"
 import asyncHandler from "../middleware/asyncHandler.js"
 import Post from "../models/post.js"
 import User from "../models/user.js"
@@ -75,11 +76,16 @@ const getMyFeed = asyncHandler(async (req, res) => {
       populate: {
         path: "parent",
         model: "Post",
+
         populate: {
           path: "user",
           model: "User",
         },
       },
+      populate: {
+        path: 'quoting',
+        model: "Post"
+      }
     })
     .populate("repostedBy", "name handle profilePicture")
     .sort("-createdAt")
@@ -200,6 +206,7 @@ const createComment = asyncHandler(async (req, res) => {
       content: req.body.content,
       image: req.body.image,
       parent: req.params.id,
+      isComment: true
     })
 
     const createdComment = await comment.save()
@@ -290,6 +297,7 @@ const repost = asyncHandler(async (req, res) => {
       user: post.user,
       repostedBy: req.user._id,
       quoting: post._id,
+      isRepost: true
       // content: post.content,
       // image: post.image,
     })
@@ -323,7 +331,7 @@ const quotePost = asyncHandler(async (req, res) => {
   let ogPost
 
   if (post.quoting && !post.content) {
-    ogPost = await Post.findByIdAndUpdate(req.params.id, {
+    ogPost = await Post.findByIdAndUpdate(post.quoting, {
       $push: {
         quotePosts: req.user._id,
       },
@@ -338,6 +346,7 @@ const quotePost = asyncHandler(async (req, res) => {
       quoting: ogPost._id,
       content: req.body.content,
       image: req.body.image,
+      isQuoting: true
     })
     await repost.save()
 
@@ -360,6 +369,7 @@ const quotePost = asyncHandler(async (req, res) => {
       quoting: post._id,
       content: req.body.content,
       image: req.body.image,
+      isQuoting: true
     })
     await repost.save()
 
